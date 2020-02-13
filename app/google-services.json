@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "828898909771",
+    "firebase_url": "https://izobonga-waiting-android.firebaseio.com",
+    "project_id": "izobonga-waiting-android",
+    "storage_bucket": "izobonga-waiting-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828898909771:android:79c9829da383e11dedf7ce",
+        "android_client_info": {
+          "package_name": "com.example.izobonga_waiting_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "828898909771-0mejl990a23bieuos7l1infm83si17ir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdqW4mSaBZ_E3lla9ixrIJyMb4wMtff4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "828898909771-0mejl990a23bieuos7l1infm83si17ir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

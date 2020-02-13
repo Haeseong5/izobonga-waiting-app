@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="10dp"
+    android:background="@color/colorBlack"
+    android:layout_height="150dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="30dp"
+                android:text="웨이팅 번호 : "/>
+            <TextView
+                android:id="@+id/item_customer_ticket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="30dp"
+                android:text="0"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textColor="@color/colorWhite"
+                android:text="핸드폰 번호 : "/>
+            <TextView
+                android:id="@+id/item_customer_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textColor="@color/colorWhite"
+                android:text="0"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textColor="@color/colorWhite"
+                android:text="인원 : "/>
+            <TextView
+                android:id="@+id/item_customer_personnel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textColor="@color/colorWhite"
+                android:text="0"/>
+        </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/item_customer_call_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="호출하기"/>
+</LinearLayout>

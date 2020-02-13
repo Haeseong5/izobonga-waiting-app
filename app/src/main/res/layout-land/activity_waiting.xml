@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="activity"
+            type="com.example.izobonga_waiting_app.view.WaitingActivity" />
+        <variable
+            name="clickCallback"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorFadedJade"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이조본가"
+                    android:textColor="@color/colorWhite"
+                    android:layout_weight="1"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:textStyle="bold"
+                    android:textSize="40dp"/>
+                <Button
+                    android:id="@+id/waiting_select_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_shape"
+                    android:text="번호표 받기"
+                    />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="휴대폰 번호를 \n입력하시면 문자로\n알려드립니다."
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:textSize="40dp"/>
+
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@color/colorChestnut"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="현재 웨이팅"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="30dp"/>
+                <TextView
+                    android:id="@+id/waiting_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 팀"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="50dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/waiting_phone_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp"
+                    android:text="010"
+                    android:textStyle="bold"
+                    android:background="@null"
+                    android:layout_marginBottom="10dp"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:maxLines="1"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/checkbox"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/checkbox_shape"
+                        android:button="@android:color/transparent"
+                        android:checked="false" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="서비스 이용약관에 동의합니다."
+                        android:textColor="@color/colorGrey"
+                        android:textSize="20dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="3"
+                android:orientation="horizontal"
+                android:rowCount="4">
+
+                <TextView
+                    android:id="@+id/btn1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:layout_marginHorizontal="1dp"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/colorBlack"
+
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:text="2"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:text="3"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:text="4"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn5"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:text="5"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn6"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:text="6"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn7"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:text="7"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn8"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn9"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:gravity="center"
+                    android:text="9"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:text="지우기"
+                    android:textSize="30dp"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:textColor="@color/colorBlack" />
+
+                <TextView
+                    android:id="@+id/btn_0"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:id="@+id/btn_input"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:onClick="@{(v)->clickCallback.onClick(v)}"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:text="입력"
+                    android:textSize="30dp"
+                    android:textColor="@color/colorBlack" />
+            </GridLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>
