@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.view.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,8 @@ import com.example.izobonga_waiting_app.FirebaseApi;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.databinding.ActivityWaitingBinding;
 import com.example.izobonga_waiting_app.model.WaitingData;
+import com.example.izobonga_waiting_app.view.dialog.PersonnelDialog;
+import com.example.izobonga_waiting_app.view.dialog.WaitingDialog;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,7 +34,8 @@ public class WaitingActivity extends AppCompatActivity {
     ArrayList<String> numbers;
     TextView tvNumber;
     WaitingDialog waitingDialog;
-    PersonnelDialog  personnelDialog;
+    PersonnelDialog personnelDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +87,7 @@ public class WaitingActivity extends AppCompatActivity {
                             binding.waitingPhoneText.getText().delete(length - 1, length);
                         }
                         break;
-                    case R.id.btn_0:
+                    case R.id.btn0:
                         binding.waitingPhoneText.append("0");
                         break;
                     case R.id.btn_input:

@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 
 import com.example.izobonga_waiting_app.FirebaseApi;
 import com.example.izobonga_waiting_app.R;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 public class PersonnelDialog extends Dialog {
             FirebaseApi firebaseApi;

@@ -7,7 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.izobonga_waiting_app.view.LoadingBarDialog;
+import com.example.izobonga_waiting_app.view.dialog.LoadingBarDialog;
 
 public class BaseActivity extends AppCompatActivity {
     LoadingBarDialog loadingBarDialog;

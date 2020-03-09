@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="activity"
-            type="com.example.izobonga_waiting_app.view.WaitingActivity" />
+            type="com.example.izobonga_waiting_app.view.activity.WaitingActivity" />
         <variable
             name="clickCallback"
             type="android.view.View.OnClickListener" />
@@ -33,7 +33,6 @@
                     android:text="이조본가"
                     android:textColor="@color/colorWhite"
                     android:layout_weight="1"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
                     android:textStyle="bold"
                     android:textSize="40dp"/>
                 <Button
@@ -128,160 +127,294 @@
                         android:textSize="20dp" />
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
 
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnCount="3"
-                android:orientation="horizontal"
-                android:rowCount="4">
+                <View android:layout_width="match_parent"
+                    android:background="@color/colorDivider"
+                    android:id="@+id/divider0"
+                    android:layout_height="1dp"/>
 
-                <TextView
-                    android:id="@+id/btn1"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:layout_marginHorizontal="1dp"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="@color/colorBlack"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_height="0dp">
 
-                    android:textSize="50dp" />
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/btn2"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:text="2"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="1"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:id="@+id/btn1"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
 
-                <TextView
-                    android:id="@+id/btn3"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:text="3"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                            android:layout_height="match_parent"/>
 
-                <TextView
-                    android:id="@+id/btn4"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:text="4"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/btn5"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:text="5"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:id="@+id/divider1"
+                        android:layout_height="match_parent"/>
 
-                <TextView
-                    android:id="@+id/btn6"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:text="6"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/btn7"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:text="7"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="2"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:id="@+id/btn2"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
 
-                <TextView
-                    android:id="@+id/btn8"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:text="8"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/btn9"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:gravity="center"
-                    android:text="9"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:id="@+id/divider2"
+                        android:layout_height="match_parent"/>
 
-                <TextView
-                    android:id="@+id/btn_delete"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:text="지우기"
-                    android:textSize="30dp"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:textColor="@color/colorBlack" />
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/btn_0"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="50dp" />
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="3"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+                            android:id="@+id/btn3"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/btn_input"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:onClick="@{(v)->clickCallback.onClick(v)}"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:text="입력"
-                    android:textSize="30dp"
-                    android:textColor="@color/colorBlack" />
-            </GridLayout>
+                </LinearLayout>
+
+                <View android:layout_width="match_parent"
+                    android:background="@color/colorDivider"
+                    android:id="@+id/divider3"
+                    android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="0dp">
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="4"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:id="@+id/btn4"
+                            android:layout_height="match_parent"/>
+
+                    </RelativeLayout>
+
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:layout_height="match_parent"/>
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="5"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:id="@+id/btn5"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
+
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:layout_height="match_parent"/>
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="6"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:id="@+id/btn6"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View android:layout_width="match_parent"
+                    android:background="@color/colorDivider"
+                    android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="0dp">
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="7"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:id="@+id/btn7"
+                            android:layout_height="match_parent"/>
+
+                    </RelativeLayout>
+
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:layout_height="match_parent"/>
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="8"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:id="@+id/btn8"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
+
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:layout_height="match_parent"/>
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="9"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:id="@+id/btn9"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View android:layout_width="match_parent"
+                    android:background="@color/colorDivider"
+                    android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="0dp">
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/btn_delete"
+                        android:layout_height="match_parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="40dp"
+                            android:background="@drawable/ic_delete_num"
+                            android:id="@+id/ivDelete"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:layout_centerInParent="true"
+                            android:layout_height="40dp"
+                            android:adjustViewBounds="true"/>
+
+                    </RelativeLayout>
+
+
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:layout_height="match_parent"/>
+
+                    <RelativeLayout android:layout_width="match_parent"
+                        android:layout_weight="1"
+
+                        android:layout_height="match_parent">
+
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="0"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="50dp"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:id="@+id/btn0"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
+
+                    <View android:layout_width="1dp"
+                        android:background="@color/colorDivider"
+                        android:layout_height="match_parent"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+                        <Button
+                            style="@style/CustomKeyBoardStyle"
+                            android:layout_width="match_parent"
+                            android:text="입력"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="30dp"
+                            android:id="@+id/btn_input"
+                            android:onClick="@{(v)->clickCallback.onClick(v)}"
+
+                            android:layout_height="match_parent"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View android:layout_width="match_parent"
+                    android:background="@color/colorDivider"
+                    android:layout_height="1dp"/>
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

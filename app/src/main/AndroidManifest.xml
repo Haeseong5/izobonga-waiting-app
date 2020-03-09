@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.ManagerActivity"/>
-        <activity android:name=".view.MainActivity" >
+        <activity android:name=".view.activity.ManagerActivity"/>
+        <activity android:name=".view.activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.WaitingActivity"
+            android:name=".view.activity.WaitingActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>

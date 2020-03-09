@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

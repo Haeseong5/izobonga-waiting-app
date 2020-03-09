@@ -10,5 +10,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGrey">#CFCFCF</color>
+    <color name="colorDivider">#DDDDDD</color>
 
 </resources>
