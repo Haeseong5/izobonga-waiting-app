@@ -16,32 +16,32 @@ import com.example.izobonga_waiting_app.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 public class PersonnelDialog extends Dialog {
-    FirebaseApi firebaseApi;
-    private ImageView minus,plus;
-    public TextView personnelNumber;
-    private Button previous, next;
-    private View.OnClickListener nextButtonListener;
-    private View.OnClickListener preButtonListener;
+            FirebaseApi firebaseApi;
+            private ImageView minus,plus;
+            public TextView personnelNumber;
+            private Button previous, next;
+            private View.OnClickListener nextButtonListener;
+            private View.OnClickListener preButtonListener;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        firebaseApi = new FirebaseApi();
-        //다이얼로그 밖의 화면은 흐리게 만들어줌
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        layoutParams.dimAmount = 0.8f;
-        getWindow().setAttributes(layoutParams);
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                firebaseApi = new FirebaseApi();
+                //다이얼로그 밖의 화면은 흐리게 만들어줌
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                layoutParams.dimAmount = 0.8f;
+                getWindow().setAttributes(layoutParams);
 
-        setContentView(R.layout.dialog_personnel);
+                setContentView(R.layout.dialog_personnel);
 
-        //셋팅
-        minus = findViewById(R.id.personnel_minus);
-        plus = findViewById(R.id.personnel_plus);
-        personnelNumber = findViewById(R.id.personnel_number);
-        previous = findViewById(R.id.personnel_previous);
-        next = findViewById(R.id.personnel_next);
+                //셋팅
+                minus = findViewById(R.id.personnel_minus);
+                plus = findViewById(R.id.personnel_plus);
+                personnelNumber = findViewById(R.id.personnel_number);
+                previous = findViewById(R.id.personnel_previous);
+                next = findViewById(R.id.personnel_next);
 
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
