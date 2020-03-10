@@ -1,76 +1,34 @@
 package com.example.izobonga_waiting_app;
 
-import android.os.Bundle;
+import android.app.ProgressDialog;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.izobonga_waiting_app.view.dialog.LoadingBarDialog;
-
 public class BaseActivity extends AppCompatActivity {
-    LoadingBarDialog loadingBarDialog;
+    public ProgressDialog mProgressDialog;
 
-    //onCreate() : 생성시 -> 초기화 처리, 뷰생성
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initView();
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
 
-        showDialog();
+        mProgressDialog.show();
     }
 
-    void initView(){
-        loadingBarDialog = new LoadingBarDialog(BaseActivity.this);
-    }
-    void showDialog(){
-        loadingBarDialog.show();
-    }
-    void dismissDialog(){
-        loadingBarDialog.dismiss();
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        dismissDialog();
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-////        return super.onCreateOptionsMenu(menu);
-//        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-//        /**
-//         * getMenuInflater()를 통해 Inflater 객체를 가져와 앞서 정의했던 Menu Resource의 ID 값을 인자로 넘겨주게 됩니다.
-//         * 그러면 전개자가 리소스의 내용을 읽어 Menu Item에 대한 객체를 생성하고 해당 메뉴를 App Bar에 반영하게 됩니다.
-//         */
-//        return true;
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item)
-//    {
-//        switch (item.getItemId())
-//        {
-//            case R.id.toolbar_menu_icon1 :
-//                printToast("clicked1!");
-//                return true;
-//            case R.id.toolbar_menu_icon2 :
-//                printToast("clicked2!");
-//                return true;
-//            case R.id.toolbar_menu_item1 :
-//                printToast("clicked3!");
-//                return true;
-//            case R.id.toolbar_menu_item2 :
-//                printToast("clicked4!");
-//                return true;
-//            case R.id.toolbar_menu_item3 :
-//                printToast("clicked5!");
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     public void printToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.R;
 
-public class PersonnelDialog extends Dialog {
+public class ChildDialog  extends Dialog {
     FireBaseApi firebaseApi;
-    private ImageView minus, plus;
-    public TextView personnelNumber;
+    private ImageView minus,plus;
+    public TextView childNumber;
     private Button previous, next;
     private View.OnClickListener nextButtonListener;
     private View.OnClickListener preButtonListener;
@@ -33,51 +33,49 @@ public class PersonnelDialog extends Dialog {
         layoutParams.dimAmount = 0.8f;
         getWindow().setAttributes(layoutParams);
 
-        setContentView(R.layout.dialog_personnel);
+        setContentView(R.layout.dialog_child);
 
         //셋팅
-        minus = findViewById(R.id.personnel_minus);
+        minus = findViewById(R.id.child_minus);
         plus = findViewById(R.id.child_plus);
-        personnelNumber = findViewById(R.id.child_number);
+        childNumber = findViewById(R.id.child_number);
         previous = findViewById(R.id.child_previous);
         next = findViewById(R.id.child_next);
 
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int n = Integer.parseInt(personnelNumber.getText().toString());
-                if (n > 0) {
+                int n = Integer.parseInt(childNumber.getText().toString());
+                if(n>0){
                     n = n - 1;
-                    personnelNumber.setText(n + "");
+                    childNumber.setText(n+"");
                 }
             }
         });
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int n = Integer.parseInt(personnelNumber.getText().toString());
+                int n = Integer.parseInt(childNumber.getText().toString());
                 n = n + 1;
-                personnelNumber.setText(n + "");
+                childNumber.setText(n+"");
             }
         });
 
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PersonnelDialog.this.dismiss();
+                ChildDialog.this.dismiss();
             }
         });
         //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
         next.setOnClickListener(nextButtonListener);
         previous.setOnClickListener(preButtonListener);
     }
-
     //생성자 생성
-    public PersonnelDialog(@NonNull Context context, View.OnClickListener positiveListener, View.OnClickListener preButtonListener) {
+    public ChildDialog(@NonNull Context context, View.OnClickListener positiveListener, View.OnClickListener preButtonListener) {
         super(context);
         this.nextButtonListener = positiveListener;
         this.preButtonListener = preButtonListener;
     }
-
 
 }

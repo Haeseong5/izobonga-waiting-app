@@ -8,14 +8,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="총 인원"
+        android:text="유아 (7세 이하)"
         android:textSize="30dp"
         android:textColor="@color/colorBlack"
         android:layout_marginTop="20dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="총 인원을 입력해주세요"
+        android:text="유아 인원수를 입력해주세요"
         android:textSize="15dp"
         android:textColor="@color/colorGrey"
         android:layout_marginTop="20dp"/>
@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:orientation="horizontal">
         <ImageView
-            android:id="@+id/personnel_minus"
+            android:id="@+id/child_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_remove_24px"

@@ -2,22 +2,17 @@ package com.example.izobonga_waiting_app.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 
 import com.example.izobonga_waiting_app.BaseActivity;
-import com.example.izobonga_waiting_app.FirebaseApi;
+import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.R;
-import com.example.izobonga_waiting_app.adapter.ManagerAdapter;
+import com.example.izobonga_waiting_app.view.adapter.ManagerAdapter;
 import com.example.izobonga_waiting_app.model.Customer;
 import com.example.izobonga_waiting_app.model.WaitingData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 //로컬영역 추가
 public class ManagerActivity extends BaseActivity {
-    FirebaseApi firebaseApi;
+    FireBaseApi firebaseApi;
     RecyclerView recyclerView;
     ManagerAdapter adapter;
     ArrayList<Customer> customers;
@@ -48,7 +43,7 @@ public class ManagerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
 
-        firebaseApi = new FirebaseApi();
+        firebaseApi = new FireBaseApi();
         customers = new ArrayList<>();
         queue = new ArrayList<>();
         initRecyclerView();
@@ -70,7 +65,7 @@ public class ManagerActivity extends BaseActivity {
                 // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
                 printToast(String.valueOf(position));
 //                customers.get(position).getWaitingNumber();
-
+                showProgressDialog();
                 callCustomer(queue.get(position), position);
             }
         }) ;
@@ -78,6 +73,7 @@ public class ManagerActivity extends BaseActivity {
 
     //웨이팅 고객 초기화. onCreate()에서 호출됨.
     public void initWaitingCustomer(){
+        showProgressDialog();
         firebaseApi.db.collection("customer").orderBy("waitingNumber", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -95,9 +91,9 @@ public class ManagerActivity extends BaseActivity {
                         } else {
                             Log.d("initWaitingCustomer", "Error getting documents: ", task.getException());
                         }
+                        hideProgressDialog();
                     }
                 });
-
     }
 
     //실시간 데이터 업데이트 리스너. 웨이팅 고객이 등록되거나 삭제될 때 콜백으로 작동함.
@@ -147,7 +143,6 @@ public class ManagerActivity extends BaseActivity {
                                     break;
                             }
                         }
-
                     }
                 });
     }
@@ -175,7 +170,10 @@ public class ManagerActivity extends BaseActivity {
             }
         });
     }
+
+    //대기 고객 호출 버튼 클릭시 호출
     public void callCustomer(final String docID, final int position){
+        showProgressDialog();
         firebaseApi.db.collection("customer").document(docID)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -192,6 +190,7 @@ public class ManagerActivity extends BaseActivity {
                     }
                 });
     }
+
     public void removeInQueue(final String docID, final int position){
         DocumentReference docRef = firebaseApi.db.collection("manager").document("waiting");
 // Remove the 'capital' field from the document
@@ -204,14 +203,16 @@ public class ManagerActivity extends BaseActivity {
                     queue.remove(docID);
                     adapter.removeItem(position);
                     adapter.notifyDataSetChanged();
+                    hideProgressDialog();
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.w("removeInQueue", "Error updating document", e);
+                    printToast("fail");
+                    hideProgressDialog();
                 }
             });
-
     }
 }

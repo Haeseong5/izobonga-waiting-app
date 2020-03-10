@@ -11,20 +11,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-public class FirebaseApi {
-    private String TAG = FirebaseApi.class.getName();
+public class FireBaseApi {
+    private String TAG = FireBaseApi.class.getName();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public void increaseWaitingCount(final Timestamp time, final String phone, final int personnel) {
+    public void increaseWaitingCount(final Timestamp time, final String phone, final int personnel, final int child) {
         DocumentReference customerRef = db.collection("manager").document("waiting");
         customerRef
                 .update("ticket", FieldValue.increment(1))
@@ -32,7 +28,7 @@ public class FirebaseApi {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "DocumentSnapshot successfully updated!");
-                getTicket(time, phone, personnel);
+                getTicket(time, phone, personnel, child);
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
@@ -44,7 +40,7 @@ public class FirebaseApi {
 
     }
 
-    public void getTicket(final Timestamp time, final String phone, final int personnel){
+    public void getTicket(final Timestamp time, final String phone, final int personnel, final int child){
         DocumentReference docRef = db.collection("manager").document("waiting");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -55,7 +51,7 @@ public class FirebaseApi {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         WaitingData waitingData = document.toObject(WaitingData.class);
                         int ticket = waitingData.getTicket();
-                        addData(time, phone, personnel, ticket);
+                        addData(time, phone, personnel, ticket, child);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -67,8 +63,14 @@ public class FirebaseApi {
     }
 
     //고객 정보 등록
-    public void addData(Timestamp time, String phone, int personnel, int waitingNumber) {
-        Customer customer = new Customer(time, phone, waitingNumber, personnel);
+    public void addData(Timestamp time, String phone, int personnel, int waitingNumber, int child) {
+        Customer customer = new Customer();
+        customer.setTimestamp(time);
+        customer.setPhone(phone);
+        customer.setChild(child);
+        customer.setPersonnel(personnel);
+        customer.setWaitingNumber(waitingNumber);
+
         db.collection("customer")
                 .add(customer)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

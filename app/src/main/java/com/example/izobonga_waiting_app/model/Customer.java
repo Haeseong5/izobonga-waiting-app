@@ -7,13 +7,16 @@ public class Customer {
     private String phone;
     private int waitingNumber;
     private int personnel;
+    private int child;
     public Customer(){
     }
-    public Customer(Timestamp timestamp, String phone, int waitingNumber, int personnel) {
+
+    public Customer(Timestamp timestamp, String phone, int waitingNumber, int personnel, int child) {
         this.timestamp = timestamp;
         this.phone = phone;
         this.waitingNumber = waitingNumber;
         this.personnel = personnel;
+        this.child = child;
     }
 
     public Timestamp getTimestamp() {
@@ -46,5 +49,13 @@ public class Customer {
 
     public void setPersonnel(int personnel) {
         this.personnel = personnel;
+    }
+
+    public int getChild() {
+        return child;
+    }
+
+    public void setChild(int child) {
+        this.child = child;
     }
 }
