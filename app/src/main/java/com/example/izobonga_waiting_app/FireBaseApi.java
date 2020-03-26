@@ -18,93 +18,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FireBaseApi {
     private String TAG = FireBaseApi.class.getName();
-    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static FirebaseFirestore db;
 
-    public void increaseWaitingCount(final Timestamp time, final String phone, final int personnel, final int child) {
-        DocumentReference customerRef = db.collection("manager").document("waiting");
-        customerRef
-                .update("ticket", FieldValue.increment(1))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "DocumentSnapshot successfully updated!");
-                getTicket(time, phone, personnel, child);
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
-                    }
-                });
-
-    }
-
-    public void getTicket(final Timestamp time, final String phone, final int personnel, final int child){
-        DocumentReference docRef = db.collection("manager").document("waiting");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        WaitingData waitingData = document.toObject(WaitingData.class);
-                        int ticket = waitingData.getTicket();
-                        addData(time, phone, personnel, ticket, child);
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    //고객 정보 등록
-    public void addData(Timestamp time, String phone, int personnel, int waitingNumber, int child) {
-        Customer customer = new Customer();
-        customer.setTimestamp(time);
-        customer.setPhone(phone);
-        customer.setChild(child);
-        customer.setPersonnel(personnel);
-        customer.setWaitingNumber(waitingNumber);
-
-        db.collection("customer")
-                .add(customer)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG,
-                                "DocumentSnapshot written with ID: " + documentReference.getId());
-                        pushWaitingQueue(documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }
-
-    public void pushWaitingQueue(String docID) {
-        DocumentReference managerRef = db.collection("manager").document("waiting");
-        managerRef
-                .update("queue", FieldValue.arrayUnion(docID))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
-                    }
-                });
+    public static FirebaseFirestore getInstance() {
+        if (db == null) {
+            db = FirebaseFirestore.getInstance();
+        }
+        return db;
     }
 
 }

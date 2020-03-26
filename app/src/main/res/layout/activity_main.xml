@@ -4,15 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.MainActivity">
+    android:orientation="vertical">
     <Button
-        android:id="@+id/main_manager_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="manager mode"/>
+        android:id="@+id/main_call_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorChestnut"
+        android:textColor="@color/colorWhite"
+        android:textSize="30dp"
+        android:onClick="onClickListener"
+        android:text="대기 고객 호출"/>
     <Button
         android:id="@+id/main_customer_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="customer mode"/>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorFadedJade"
+        android:textColor="@color/colorWhite"
+        android:textSize="30dp"
+        android:onClick="onClickListener"
+        android:text="대기 번호 발급"/>
+    <Button
+        android:id="@+id/main_manage_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorTamarind"
+        android:textColor="@color/colorWhite"
+        android:textSize="30dp"
+        android:onClick="onClickListener"
+        android:text="고객 관리"/>
 </LinearLayout>

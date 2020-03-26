@@ -3,7 +3,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.izobonga_waiting_app.view.activity.WaitingActivity" />
+            type="com.example.izobonga_waiting_app.view.WaitingActivity" />
         <variable
             name="clickCallback"
             type="android.view.View.OnClickListener" />

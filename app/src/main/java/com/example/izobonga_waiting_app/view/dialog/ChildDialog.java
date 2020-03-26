@@ -78,4 +78,8 @@ public class ChildDialog  extends Dialog {
         this.preButtonListener = preButtonListener;
     }
 
+    public void dismissDialog(){
+        childNumber.setText("0");
+        dismiss();
+    }
 }

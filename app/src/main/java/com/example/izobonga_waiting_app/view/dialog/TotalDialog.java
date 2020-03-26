@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.R;
 
-public class PersonnelDialog extends Dialog {
+public class TotalDialog extends Dialog {
     FireBaseApi firebaseApi;
     private ImageView minus, plus;
-    public TextView personnelNumber;
+    public TextView totalNumber;
     private Button previous, next;
     private View.OnClickListener nextButtonListener;
     private View.OnClickListener preButtonListener;
@@ -38,33 +38,33 @@ public class PersonnelDialog extends Dialog {
         //셋팅
         minus = findViewById(R.id.personnel_minus);
         plus = findViewById(R.id.child_plus);
-        personnelNumber = findViewById(R.id.child_number);
+        totalNumber = findViewById(R.id.child_number);
         previous = findViewById(R.id.child_previous);
         next = findViewById(R.id.child_next);
 
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int n = Integer.parseInt(personnelNumber.getText().toString());
+                int n = Integer.parseInt(totalNumber.getText().toString());
                 if (n > 0) {
                     n = n - 1;
-                    personnelNumber.setText(n + "");
+                    totalNumber.setText(n + "");
                 }
             }
         });
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int n = Integer.parseInt(personnelNumber.getText().toString());
+                int n = Integer.parseInt(totalNumber.getText().toString());
                 n = n + 1;
-                personnelNumber.setText(n + "");
+                totalNumber.setText(n + "");
             }
         });
 
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PersonnelDialog.this.dismiss();
+                TotalDialog.this.dismiss();
             }
         });
         //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
@@ -73,11 +73,14 @@ public class PersonnelDialog extends Dialog {
     }
 
     //생성자 생성
-    public PersonnelDialog(@NonNull Context context, View.OnClickListener positiveListener, View.OnClickListener preButtonListener) {
+    public TotalDialog(@NonNull Context context, View.OnClickListener positiveListener, View.OnClickListener preButtonListener) {
         super(context);
         this.nextButtonListener = positiveListener;
         this.preButtonListener = preButtonListener;
     }
-
+    public void dismissDialog(){
+        totalNumber.setText("0");
+        dismiss();
+    }
 
 }

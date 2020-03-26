@@ -1,25 +1,24 @@
-package com.example.izobonga_waiting_app.view.activity;
+package com.example.izobonga_waiting_app.view;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
+import com.example.izobonga_waiting_app.BaseActivity;
 import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.databinding.ActivityWaitingBinding;
-import com.example.izobonga_waiting_app.model.WaitingData;
+import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
+import com.example.izobonga_waiting_app.service.WaitingService;
 import com.example.izobonga_waiting_app.view.dialog.ChildDialog;
-import com.example.izobonga_waiting_app.view.dialog.PersonnelDialog;
-import com.example.izobonga_waiting_app.view.dialog.WaitingDialog;
+import com.example.izobonga_waiting_app.view.dialog.TotalDialog;
+import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
+import com.example.izobonga_waiting_app.model.WaitingData;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,18 +27,17 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 
-public class WaitingActivity extends AppCompatActivity {
+public class WaitingActivity extends BaseActivity implements WaitingActivityView {
+    private final String TAG = WaitingActivity.class.getName();
     FireBaseApi firebaseApi;
     ActivityWaitingBinding binding;
-    RecyclerView recyclerView;
     ArrayList<String> numbers;
-    TextView tvNumber;
-    WaitingDialog waitingDialog;
-    PersonnelDialog personnelDialog;
-    ChildDialog childDialog;
+    TicketDialog mTicketDialog;
+    TotalDialog mTotalDialog;
+    ChildDialog mChildDialog;
 
     int mChild;
-    int mPersonnel;
+    int mTotal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,34 +53,34 @@ public class WaitingActivity extends AppCompatActivity {
         binding.setClickCallback(clickListener);
     }
 
-    private void addCustomer(int personnelNumber, int childNumber){
-        firebaseApi.increaseWaitingCount( //대기번호 늘리기
+    private void tryWaiting(int personnelNumber, int childNumber){
+        WaitingService waitingService = new WaitingService(WaitingActivity.this);
+        waitingService.increaseWaitingCount(
                 Timestamp.now(),
                 binding.waitingPhoneText.getText().toString(),
                 personnelNumber,
-                childNumber
-        );
+                childNumber);
     }
-    private View.OnClickListener positiveListener = new View.OnClickListener() {
+    private View.OnClickListener ticketListener = new View.OnClickListener() {
         public void onClick(View v) {
-            waitingDialog.dismiss();
+            mTicketDialog.dismiss();
+            mTicketDialog = null;
             binding.waitingPhoneText.setText("010-");
             binding.waitingPhoneText.addTextChangedListener(new PhoneNumberFormattingTextWatcher()); //입력하면 phone number form 으로 만들기
-//            binding.waitingPhoneText.addTextChangedListener(new PhoneNumberFormattingTextWatcher()); //입력하면 phone number form 으로 만들기
         }
     };
 
     //총 인원 수 선택 Dialog 다음 버튼 클릭 시 이벤트 처리
     private View.OnClickListener personnelNextListener = new View.OnClickListener() {
         public void onClick(View v) {
-            String personnelNumber = personnelDialog.personnelNumber.getText().toString();
-            mPersonnel = Integer.parseInt(personnelNumber);
-            if ( mPersonnel < 2){
+            String personnelNumber = mTotalDialog.totalNumber.getText().toString();
+            mTotal = Integer.parseInt(personnelNumber);
+            if ( mTotal < 2){
                 printToast("2인 이상부터 예약 가능합니다,");
             }else {
-                if (personnelDialog != null){
-                    personnelDialog.dismiss();
-                }
+//                if (mTotalDialog != null && mTotalDialog.isShowing()){
+//                    mTotalDialog.dismiss();
+//                }
                 showChildDialog();
             }
         }
@@ -91,73 +89,79 @@ public class WaitingActivity extends AppCompatActivity {
     //아동 인원 수 선택 Dialog 다음 버튼 클릭 시 이벤트 처리
     private View.OnClickListener childNextListener = new View.OnClickListener() {
         public void onClick(View v) {
-            mChild= Integer.parseInt(childDialog.childNumber.getText().toString());
-            addCustomer(mPersonnel, mChild);
-            if (childDialog != null){
-                childDialog.dismiss();
-            }
-            showWaitingDialog();
+            mChild = Integer.parseInt(mChildDialog.childNumber.getText().toString());
+            showProgressDialog();
+            tryWaiting(mTotal, mChild);
         }
     };
 
 
-    private View.OnClickListener personnelPreListener = new View.OnClickListener() {
+    private View.OnClickListener totalPreListener = new View.OnClickListener() {
         public void onClick(View v) {
-            mPersonnel = 0;
-            if (personnelDialog != null){
-                personnelDialog.dismiss();
+            mTotal = 0;
+            if (mTotalDialog != null){
+                mTotalDialog.dismissDialog();
             }
-
         }
     };
-
 
     //아동 인원 수 선택 Dialog 다음 이전 클릭 시 이벤트 처리
     private View.OnClickListener childPreListener = new View.OnClickListener() {
         public void onClick(View v) {
             mChild = 0;
-            if (childDialog != null){
-                childDialog.dismiss();
+            if (mChildDialog != null && mChildDialog.isShowing()){
+//                mChildDialog.dismiss();
+                mChildDialog.dismissDialog();
             }
         }
     };
 
-    private void showPersonnelDialog(){
-        personnelDialog = new PersonnelDialog(WaitingActivity.this, personnelNextListener, personnelPreListener);
-        personnelDialog.show();
+    private void showTotalDialog(){
+        Log.d("total, ", String.valueOf(mTotal));
+        if (mTotalDialog == null) {
+            mTotalDialog = new TotalDialog(WaitingActivity.this, personnelNextListener, totalPreListener);
+            mTotalDialog.setCancelable(false);
+            mTotalDialog.setCanceledOnTouchOutside(false);
+        }
+        mTotalDialog.show();
     }
     private void showChildDialog(){
-        childDialog = new ChildDialog(WaitingActivity.this, childNextListener, childPreListener);
-        childDialog.show();
+        Log.d("child, ", String.valueOf(mChild));
+        if (mChildDialog == null){
+            mChildDialog = new ChildDialog(WaitingActivity.this, childNextListener, childPreListener);
+            mChildDialog.setCancelable(false);
+            mChildDialog.setCanceledOnTouchOutside(false);
+        }
+        mChildDialog.show();
     }
-    private void showWaitingDialog(){
-        waitingDialog = new WaitingDialog(WaitingActivity.this, positiveListener);
-        waitingDialog.show();
-    }
-
-
-    void printToast(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    private void showTicketDialog(int ticket){
+        Log.d("ticket", String.valueOf(ticket));
+        if (mTicketDialog == null){
+            mTicketDialog = new TicketDialog(WaitingActivity.this, ticketListener, ticket);
+            mTicketDialog.setCancelable(false);
+            mTicketDialog.setCanceledOnTouchOutside(false);
+        }
+        mTicketDialog.show();
     }
 
     public void waitingListener(){
-        final DocumentReference docRef = firebaseApi.db.collection("manager").document("waiting");
+        final DocumentReference docRef = FireBaseApi.getInstance().collection("manager").document("waiting");
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.w("waitingListener", "Listen failed.", e);
+                    Log.w("setWaitingEventListener", "Listen failed.", e);
                     return;
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    Log.d("waitingListener", "Current data: " + snapshot.getData());
+                    Log.d("setWaitingEventListener", "Current data: " + snapshot.getData());
                     WaitingData waitingData = snapshot.toObject(WaitingData.class);
                     int waiting = waitingData.getQueue().size();
                     binding.waitingCountText.setText(waiting+"");
                 } else {
-                    Log.d("waitingListener", "Current data: null");
+                    Log.d("setWaitingEventListener", "Current data: null");
                 }
             }
         });
@@ -215,7 +219,7 @@ public class WaitingActivity extends AppCompatActivity {
                             //finish input
                             printToast(binding.waitingPhoneText.getText().toString());
                             //request server(폰번호);
-                            showPersonnelDialog();
+                            showTotalDialog();
                         }
                     }else{
                         printToast("disagree permission");
@@ -225,5 +229,25 @@ public class WaitingActivity extends AppCompatActivity {
             }
         }
     };
+//
 
+    @Override
+    public void validateSuccess(String message, int ticket) {
+        hideProgressDialog();
+        if (mChildDialog != null  && mChildDialog.isShowing()){
+                mChildDialog.dismissDialog();
+        }
+        if (mTotalDialog != null  && mTotalDialog.isShowing()){
+            mTotalDialog.dismissDialog();
+        }
+
+        showTicketDialog(ticket);
+    }
+
+    @Override
+    public void validateFailure(String message) {
+        hideProgressDialog();
+        printToast(message);
+        printLog(TAG, message);
+    }
 }

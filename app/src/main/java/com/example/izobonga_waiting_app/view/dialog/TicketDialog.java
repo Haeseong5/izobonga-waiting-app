@@ -6,14 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.example.izobonga_waiting_app.R;
 
-public class WaitingDialog extends Dialog {
+public class TicketDialog extends Dialog {
 
     private Button mPositiveButton;
+    private TextView tvWaitingNumber;
+    private int mTicket;
 
     private View.OnClickListener mPositiveListener;
 
@@ -28,20 +31,23 @@ public class WaitingDialog extends Dialog {
         layoutParams.dimAmount = 0.8f;
         getWindow().setAttributes(layoutParams);
 
-        setContentView(R.layout.dialog_waiting);
-
-        //셋팅
+        setContentView(R.layout.dialog_ticket);
+        tvWaitingNumber = findViewById(R.id.waiting_dialog_number);
         mPositiveButton = findViewById(R.id.waiting_dialog_finish_button);
-
-        //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
+        String ticket = String.valueOf(mTicket);
+        tvWaitingNumber.setText(ticket);
         mPositiveButton.setOnClickListener(mPositiveListener);
     }
     //생성자 생성
-    public WaitingDialog(@NonNull Context context, View.OnClickListener positiveListener) {
+    public TicketDialog(@NonNull Context context, View.OnClickListener positiveListener, int mTicket) {
         super(context);
         this.mPositiveListener = positiveListener;
+        this.mTicket = mTicket;
     }
 
+    public void setTicket(int ticket){
+        tvWaitingNumber.setText(String.valueOf(ticket));
+    }
 }
 
 

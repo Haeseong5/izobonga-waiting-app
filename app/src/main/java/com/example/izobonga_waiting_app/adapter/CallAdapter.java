@@ -1,5 +1,6 @@
-package com.example.izobonga_waiting_app.view.adapter;
+package com.example.izobonga_waiting_app.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,12 @@ import com.example.izobonga_waiting_app.model.Customer;
 
 import java.util.ArrayList;
 
-public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.MyViewHolder> {
+public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> {
     private ArrayList<Customer> customers;
     // 리스너 객체 참조를 저장하는 변수
-    private OnItemClickListener mListener = null;
+    public OnItemClickListener mListener = null;
 
-    public ManagerAdapter(ArrayList<Customer> customers) {
+    public CallAdapter(ArrayList<Customer> customers) {
         this.customers = customers;
     }
 
@@ -47,6 +48,7 @@ public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.MyViewHo
         holder.tvPhone.setText(customers.get(position).getPhone());
         holder.tvPersonnel.setText(String.valueOf(customers.get(position).getPersonnel()));
         holder.tvChild.setText(String.valueOf(customers.get(position).getChild()));
+        Log.d("CallAdapter ", customers.get(position).getPhone());
     }
 
     @Override

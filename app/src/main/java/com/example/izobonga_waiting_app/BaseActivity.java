@@ -2,22 +2,32 @@ package com.example.izobonga_waiting_app;
 
 import android.app.ProgressDialog;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
+
 public class BaseActivity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;
+    public TicketDialog mTicketDialog;
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setIndeterminate(true); //무한진행상태 표시.
+            mProgressDialog.setCancelable(true);
+            mProgressDialog.setCanceledOnTouchOutside(false);
         }
-
         mProgressDialog.show();
     }
+    /*
+    BadTokenException의 이유를 한문장으로 정리하면 ,
+     예외 메시지에 ”is your activity running?” 이라고 명시되어 있듯 종료된 Activity의 context를 인자로 다이얼로그 창을 표시하려고 할 때 발생한다.
+    다이얼로그 창을 표시할 Activity가 없기 때문에 안드로이드 런타임이 나쁜 토큰(Bad Token1))이라는 예외를 던진다.
+     */
 
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
@@ -25,6 +35,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickListener(View view){
+
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -63,6 +76,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("BASE ACTIVITY", "DESTROY");
         //폐기 시 필요없는 리소스를 해체, 액티비티 참조는 모두 정리한다.
         //뷰는 액티비티가 폐기된 다음 Garbage Collection에 의해 자동으로 메모리에서 해체
     }
