@@ -18,7 +18,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
@@ -29,11 +28,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CallService {
+public class CallService2 {
     private final String TAG = "CallService";
     private CallActivityView mCallActivityView;
 
-    public CallService(final CallActivityView callActivityView) {
+    public CallService2(final CallActivityView callActivityView) {
         this.mCallActivityView = callActivityView;
     }
 
@@ -59,30 +58,7 @@ public class CallService {
                 });
     }
 
-    //대기고객 추가
-    public void addWaitingCustomer(final String docID) {
-        DocumentReference docRef = FireBaseApi.getInstance().collection("customer").document(docID);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("addWaitingCustomer", "DocumentSnapshot data: " + document.getData());
-                        Customer customer = document.toObject(Customer.class);
-                        mCallActivityView.validateSuccess_addWaitingCustomer(customer, docID);
-//                        adapter.addItem(customer);
-//                        queue.add(docID);
-//                        adapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("addWaitingCustomer", "No such document");
-                    }
-                } else {
-                    Log.d("addWaitingCustomer", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
+
 
     //대기 고객 호출 버튼 클릭시 호출
     public void deleteWaitingCustomer(final String docID, final int position) {
@@ -93,7 +69,7 @@ public class CallService {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("deleteWaitingCustomer", "DocumentSnapshot successfully deleted!");
-                        removeInQueue(docID, position);
+                        mCallActivityView.validateSuccess_deleteWaitingCustomer(docID, position);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -103,28 +79,27 @@ public class CallService {
                     }
                 });
     }
+    public void waitingListener(){
+        final DocumentReference docRef = FireBaseApi.getInstance().collection("manager").document("waiting");
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("setWaitingEventListener", "Listen failed.", e);
+                    return;
+                }
 
-    public void removeInQueue(final String docID, final int position) {
-        DocumentReference docRef = FireBaseApi.getInstance().collection("manager").document("waiting");
-// Remove the 'capital' field from the document
-        docRef
-                .update("queue", FieldValue.arrayRemove(docID))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("removeInQueue", "DocumentSnapshot successfully updated!");
-                        mCallActivityView.validateSuccess_deleteWaitingCustomer(docID, position);
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("removeInQueue", "Error updating document", e);
-                    }
-                });
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d("setWaitingEventListener", "Current data: " + snapshot.getData());
+                    WaitingData waitingData = snapshot.toObject(WaitingData.class);
+                    mCallActivityView.added(waitingData);
+                } else {
+                    Log.d("setWaitingEventListener", "Current data: null");
+                }
+            }
+        });
     }
-
     //실시간 데이터 업데이트 리스너. 웨이팅 고객이 등록되거나 삭제될 때 콜백으로 작동함.
     public void setWaitingEventListener(){
         final String TAG = "setWaitingEventListener";

@@ -1,36 +1,29 @@
 package com.example.izobonga_waiting_app.view;
 
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import androidx.databinding.DataBindingUtil;
 
 import com.example.izobonga_waiting_app.BaseActivity;
 import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.databinding.ActivityWaitingBinding;
 import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
-import com.example.izobonga_waiting_app.service.WaitingService;
-import com.example.izobonga_waiting_app.view.dialog.ChildDialog;
-import com.example.izobonga_waiting_app.view.dialog.TotalDialog;
-import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
 import com.example.izobonga_waiting_app.model.WaitingData;
+import com.example.izobonga_waiting_app.service.WaitingService;
+import com.example.izobonga_waiting_app.service.WaitingService2;
+import com.example.izobonga_waiting_app.view.dialog.ChildDialog;
+import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
+import com.example.izobonga_waiting_app.view.dialog.TotalDialog;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class WaitingActivity extends BaseActivity implements WaitingActivityView {
-    private final String TAG = WaitingActivity.class.getName();
+public class WaitingActivity2 extends BaseActivity implements WaitingActivityView {
+    private final String TAG = WaitingActivity2.class.getName();
     FireBaseApi firebaseApi;
     ActivityWaitingBinding binding;
     ArrayList<String> numbers;
@@ -55,8 +48,14 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         binding.setClickCallback(clickListener);
     }
 
+    private void waitingListener() {
+        WaitingService2 waitingActivity2  = new WaitingService2(WaitingActivity2.this);
+        waitingActivity2.waitingListener();
+
+    }
+
     private void tryWaiting(int personnelNumber, int childNumber){
-        WaitingService waitingService = new WaitingService(WaitingActivity.this);
+        WaitingService waitingService = new WaitingService(WaitingActivity2.this);
         waitingService.increaseWaitingCount(
                 Timestamp.now(),
                 binding.waitingPhoneText.getText().toString(),
@@ -121,7 +120,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     private void showTotalDialog(){
         Log.d("total, ", String.valueOf(mTotal));
         if (mTotalDialog == null) {
-            mTotalDialog = new TotalDialog(WaitingActivity.this, personnelNextListener, totalPreListener);
+            mTotalDialog = new TotalDialog(WaitingActivity2.this, personnelNextListener, totalPreListener);
             mTotalDialog.setCancelable(false);
             mTotalDialog.setCanceledOnTouchOutside(false);
         }
@@ -130,7 +129,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     private void showChildDialog(){
         Log.d("child, ", String.valueOf(mChild));
         if (mChildDialog == null){
-            mChildDialog = new ChildDialog(WaitingActivity.this, childNextListener, childPreListener);
+            mChildDialog = new ChildDialog(WaitingActivity2.this, childNextListener, childPreListener);
             mChildDialog.setCancelable(false);
             mChildDialog.setCanceledOnTouchOutside(false);
         }
@@ -139,64 +138,14 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     private void showTicketDialog(int ticket){
         Log.d("ticket", String.valueOf(ticket));
         if (mTicketDialog == null){
-            mTicketDialog = new TicketDialog(WaitingActivity.this, ticketListener, ticket);
+            mTicketDialog = new TicketDialog(WaitingActivity2.this, ticketListener, ticket);
             mTicketDialog.setCancelable(false);
             mTicketDialog.setCanceledOnTouchOutside(false);
         }
         mTicketDialog.show();
     }
 
-    public void waitingListener(){
-        final DocumentReference docRef = FireBaseApi.getInstance().collection("manager").document("waiting");
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w("setWaitingEventListener", "Listen failed.", e);
-                    return;
-                }
 
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d("setWaitingEventListener", "Current data: " + snapshot.getData());
-                    WaitingData waitingData = snapshot.toObject(WaitingData.class);
-                    int waiting = waitingData.getQueue().size();
-                    binding.waitingCountText.setText(waiting+"");
-                } else {
-                    Log.d("setWaitingEventListener", "Current data: null");
-                }
-            }
-        });
-    }
-    public void listenState() {
-        // [START listen_state]
-        FireBaseApi.getInstance().collection("customer")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-
-                        if (e != null) {
-                            Log.w(TAG, "listen:error", e);
-                            return;
-                        }
-
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                Log.d(TAG, "New city: " + dc.getDocument().getData());
-                            }else if (dc.getType() == DocumentChange.Type.MODIFIED) {
-                                Log.d(TAG, "New city: " + dc.getDocument().getData());
-
-                            }
-                        }
-
-                        if (!snapshots.getMetadata().isFromCache()) {
-                            Log.d(TAG, "Got initial state.");
-                        }
-                    }
-                });
-        // [END listen_state]
-    }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override

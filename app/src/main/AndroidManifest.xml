@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.WaitingActivity"
+            android:name=".view.WaitingActivity2"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>

@@ -35,7 +35,7 @@ public class Customer {
         this.phone = phone;
     }
 
-    public int getWaitingNumber() {
+    public int getTicket() {
         return waitingNumber;
     }
 

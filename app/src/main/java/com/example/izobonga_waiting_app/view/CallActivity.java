@@ -1,25 +1,22 @@
 package com.example.izobonga_waiting_app.view;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.izobonga_waiting_app.BaseActivity;
-import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.adapter.CallAdapter;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.interfaces.CallActivityView;
 import com.example.izobonga_waiting_app.model.Customer;
 import com.example.izobonga_waiting_app.model.WaitingData;
 import com.example.izobonga_waiting_app.service.CallService;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -57,7 +54,7 @@ public class CallActivity extends BaseActivity implements CallActivityView {
             public void onItemClick(View v, int position) {
                 // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
                 printToast(String.valueOf(position));
-//                customers.get(position).getWaitingNumber();
+//                customers.get(position).getTicket();
                 showProgressDialog();
                 tryCallCustomer(queue.get(position), position); //docID, index
             }
@@ -88,6 +85,12 @@ public class CallActivity extends BaseActivity implements CallActivityView {
 //        showProgressDialog();
         CallService callService = new CallService(this);
         callService.addWaitingCustomer(docID);
+    }
+
+    private void tryDeleteCustomer(final String docID){
+        showProgressDialog();
+        CallService callService = new CallService(this);
+        callService.deleteCustomer(docID);
     }
 
     @Override
@@ -159,5 +162,36 @@ public class CallActivity extends BaseActivity implements CallActivityView {
 
         CallService callService = new CallService(this);
         callService.detachListener();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_manage, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
+        Toast toast = Toast.makeText(getApplicationContext(),"", Toast.LENGTH_LONG);
+
+        switch(item.getItemId())
+        {
+            case R.id.menu_item_reset:
+                for (int i=0; i<queue.size(); i++){
+                    tryDeleteCustomer(queue.get(i));
+                }
+                //init
+                //ui update
+                hideProgressDialog();
+                break;
+        }
+
+        toast.show();
+
+        return super.onOptionsItemSelected(item);
     }
 }

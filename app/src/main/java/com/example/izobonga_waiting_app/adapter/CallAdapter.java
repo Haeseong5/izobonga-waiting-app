@@ -44,7 +44,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvTicket.setText(String.valueOf(customers.get(position).getWaitingNumber()));
+        holder.tvTicket.setText(String.valueOf(customers.get(position).getTicket()));
         holder.tvPhone.setText(customers.get(position).getPhone());
         holder.tvPersonnel.setText(String.valueOf(customers.get(position).getPersonnel()));
         holder.tvChild.setText(String.valueOf(customers.get(position).getChild()));
