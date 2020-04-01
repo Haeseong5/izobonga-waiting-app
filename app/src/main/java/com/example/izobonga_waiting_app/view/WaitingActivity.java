@@ -1,6 +1,5 @@
 package com.example.izobonga_waiting_app.view;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
@@ -18,14 +17,7 @@ import com.example.izobonga_waiting_app.service.WaitingService;
 import com.example.izobonga_waiting_app.view.dialog.ChildDialog;
 import com.example.izobonga_waiting_app.view.dialog.TotalDialog;
 import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
-import com.example.izobonga_waiting_app.model.WaitingData;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -147,55 +139,8 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     }
 
     public void waitingListener(){
-        final DocumentReference docRef = FireBaseApi.getInstance().collection("manager").document("waiting");
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w("setWaitingEventListener", "Listen failed.", e);
-                    return;
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d("setWaitingEventListener", "Current data: " + snapshot.getData());
-                    WaitingData waitingData = snapshot.toObject(WaitingData.class);
-                    int waiting = waitingData.getQueue().size();
-                    binding.waitingCountText.setText(waiting+"");
-                } else {
-                    Log.d("setWaitingEventListener", "Current data: null");
-                }
-            }
-        });
-    }
-    public void listenState() {
-        // [START listen_state]
-        FireBaseApi.getInstance().collection("customer")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-
-                        if (e != null) {
-                            Log.w(TAG, "listen:error", e);
-                            return;
-                        }
-
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                Log.d(TAG, "New city: " + dc.getDocument().getData());
-                            }else if (dc.getType() == DocumentChange.Type.MODIFIED) {
-                                Log.d(TAG, "New city: " + dc.getDocument().getData());
-
-                            }
-                        }
-
-                        if (!snapshots.getMetadata().isFromCache()) {
-                            Log.d(TAG, "Got initial state.");
-                        }
-                    }
-                });
-        // [END listen_state]
+        WaitingService waitingService = new WaitingService(this);
+        waitingService.waitingListener();
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -283,7 +228,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     }
 
     @Override
-    public void modified(WaitingData waitingData) {
-
+    public void modified(long size) {
+        binding.waitingCountText.setText(String.valueOf(size));
     }
 }

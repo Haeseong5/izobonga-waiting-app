@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="activity"
-            type="com.example.izobonga_waiting_app.view.WaitingActivity2" />
+            type="com.example.izobonga_waiting_app.view.WaitingActivity" />
         <variable
             name="clickCallback"
             type="android.view.View.OnClickListener" />

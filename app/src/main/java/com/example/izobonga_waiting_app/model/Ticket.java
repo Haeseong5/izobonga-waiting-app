@@ -2,7 +2,7 @@ package com.example.izobonga_waiting_app.model;
 
 import java.util.ArrayList;
 
-public class WaitingData {
+public class Ticket {
     private int ticket;
     private ArrayList<String> queue;
 

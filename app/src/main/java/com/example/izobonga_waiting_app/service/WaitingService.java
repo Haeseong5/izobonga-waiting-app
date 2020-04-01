@@ -1,7 +1,6 @@
 package com.example.izobonga_waiting_app.service;
 
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +8,7 @@ import androidx.annotation.Nullable;
 import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
 import com.example.izobonga_waiting_app.model.Customer;
-import com.example.izobonga_waiting_app.model.WaitingData;
+import com.example.izobonga_waiting_app.model.Ticket;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,6 +20,16 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CUSTOMER;
+import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_MANAGER;
+import static com.example.izobonga_waiting_app.FireBaseApi.FILED_TICKET;
 
 public class WaitingService {
     private final String TAG = "WaitingService";
@@ -56,7 +65,7 @@ public class WaitingService {
 
     public void getTicket(final Timestamp time, final String phone, final int personnel, final int child){
         FirebaseFirestore db = FireBaseApi.getInstance();
-        DocumentReference docRef = db.collection("manager").document("waiting");
+        DocumentReference docRef = db.collection(COLLECTION_MANAGER).document("waiting");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -64,7 +73,7 @@ public class WaitingService {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        WaitingData waitingData = document.toObject(WaitingData.class);
+                        Ticket waitingData = document.toObject(Ticket.class);
                         int ticket = waitingData.getTicket();
                         addData(time, phone, personnel, ticket, child);
                     } else {
@@ -80,22 +89,20 @@ public class WaitingService {
 
     //고객 정보 등록
     public void addData(Timestamp time, String phone, int personnel, final int ticket, int child) {
-        FirebaseFirestore db = FireBaseApi.getInstance();
         Customer customer = new Customer();
         customer.setTimestamp(time);
         customer.setPhone(phone);
         customer.setChild(child);
         customer.setPersonnel(personnel);
-        customer.setWaitingNumber(ticket);
-
-        db.collection("customer")
-                .add(customer)
+        customer.setTicket(ticket);
+        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).add(customer)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG,
                                 "DocumentSnapshot written with ID: " + documentReference.getId());
-                        pushWaitingQueue(documentReference.getId(), ticket);
+                        setDocID(documentReference.getId());
+                        mWaitingActivityView.validateSuccess("success", ticket);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -107,47 +114,46 @@ public class WaitingService {
                 });
     }
 
-    public void pushWaitingQueue(String docID, final int ticket) {
-        FirebaseFirestore db = FireBaseApi.getInstance();
-        DocumentReference managerRef = db.collection("manager").document("waiting");
-        managerRef
-                .update("queue", FieldValue.arrayUnion(docID))
+    //document 삭제를 용이하게 하기 위해 document 의 필드에 docID 등록
+    public void setDocID(final String docID){
+        DocumentReference customerRef = FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).document(docID);
+        customerRef
+                .update("docID", docID)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
-                        mWaitingActivityView.validateSuccess("success", ticket);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error updating document", e);
-                        mWaitingActivityView.validateFailure("failure pushWaitingQueue");
                     }
                 });
     }
 
     public void waitingListener(){
-        final DocumentReference docRef = FireBaseApi.getInstance().collection("customer").document("waiting");
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w("setWaitingEventListener", "Listen failed.", e);
-                    return;
-                }
+        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER)
+                .orderBy(FILED_TICKET, Query.Direction.ASCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
 
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d("setWaitingEventListener", "Current data: " + snapshot.getData());
-//                    WaitingData waitingData = snapshot.toObject(WaitingData.class);
-//                    int waiting = waitingData.getQueue().size();
-//                    binding.waitingCountText.setText(waiting+"");
-                } else {
-                    Log.d("setWaitingEventListener", "Current data: null");
-                }
-            }
-        });
+                        //
+                        List<Long> customers = new ArrayList<>();
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.get(FILED_TICKET) != null ) {
+                                customers.add(doc.getLong(FILED_TICKET));
+                            }
+                        }
+                        mWaitingActivityView.modified(customers.size());
+                    }
+                });
     }
 }

@@ -5,18 +5,11 @@ import com.google.firebase.Timestamp;
 public class Customer {
     private Timestamp timestamp;
     private String phone;
-    private int waitingNumber;
+    private int ticket;
     private int personnel;
     private int child;
+    private String docID;
     public Customer(){
-    }
-
-    public Customer(Timestamp timestamp, String phone, int waitingNumber, int personnel, int child) {
-        this.timestamp = timestamp;
-        this.phone = phone;
-        this.waitingNumber = waitingNumber;
-        this.personnel = personnel;
-        this.child = child;
     }
 
     public Timestamp getTimestamp() {
@@ -36,11 +29,11 @@ public class Customer {
     }
 
     public int getTicket() {
-        return waitingNumber;
+        return ticket;
     }
 
-    public void setWaitingNumber(int waitingNumber) {
-        this.waitingNumber = waitingNumber;
+    public void setTicket(int ticket) {
+        this.ticket = ticket;
     }
 
     public int getPersonnel() {
@@ -57,5 +50,13 @@ public class Customer {
 
     public void setChild(int child) {
         this.child = child;
+    }
+
+    public String getDocID() {
+        return docID;
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
     }
 }
