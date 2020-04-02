@@ -90,7 +90,7 @@ public class CallActivity extends BaseActivity implements CallActivityView {
     //고객이 추가되었을 때 호출 됨.
     @Override
     public void added(Customer customer) {
-        printLog("added", "modify");
+        printLog("modified", "modify");
         customers.add(customer);
         adapter.notifyDataSetChanged();
     }

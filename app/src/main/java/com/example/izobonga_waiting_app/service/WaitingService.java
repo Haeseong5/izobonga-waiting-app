@@ -14,31 +14,28 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CUSTOMER;
 import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_MANAGER;
-import static com.example.izobonga_waiting_app.FireBaseApi.FILED_TICKET;
 
 public class WaitingService {
     private final String TAG = "WaitingService";
     private final WaitingActivityView mWaitingActivityView;
+    private ArrayList<String> mTicketList = new ArrayList<>(); //웨이팅 중인 고객 수 관리 하기 위한 List.
 
     public WaitingService(final WaitingActivityView waitingActivityView) {
         this.mWaitingActivityView = waitingActivityView;
     }
-
 
 
     public void increaseWaitingCount(final Timestamp time, final String phone, final int personnel, final int child) {
@@ -63,7 +60,7 @@ public class WaitingService {
 
     }
 
-    public void getTicket(final Timestamp time, final String phone, final int personnel, final int child){
+    public void getTicket(final Timestamp time, final String phone, final int personnel, final int child) {
         FirebaseFirestore db = FireBaseApi.getInstance();
         DocumentReference docRef = db.collection(COLLECTION_MANAGER).document("waiting");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -115,7 +112,7 @@ public class WaitingService {
     }
 
     //document 삭제를 용이하게 하기 위해 document 의 필드에 docID 등록
-    public void setDocID(final String docID){
+    public void setDocID(final String docID) {
         DocumentReference customerRef = FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).document(docID);
         customerRef
                 .update("docID", docID)
@@ -133,27 +130,38 @@ public class WaitingService {
                 });
     }
 
-    public void waitingListener(){
+    public void setWaitingEventListener() {
+        final String TAG = "setWaitingEventListener";
         FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER)
-                .orderBy(FILED_TICKET, Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
+                            Log.w(TAG, "listen:error", e);
                             return;
                         }
-
-                        //
-                        List<Long> customers = new ArrayList<>();
-                        for (QueryDocumentSnapshot doc : value) {
-                            if (doc.get(FILED_TICKET) != null ) {
-                                customers.add(doc.getLong(FILED_TICKET));
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED: //초기화 시 호출됨. + 고객 추가
+                                    Log.d(TAG, "ADDDE CUSTOMER: " + dc.getDocument().getData());
+                                    Customer addedCustomer = dc.getDocument().toObject(Customer.class);
+                                    mTicketList.add(String.valueOf(addedCustomer.getTicket()));
+                                    mWaitingActivityView.modified(mTicketList.size());
+                                    break;
+                                case REMOVED: //고객 호출되었을 때
+                                    Log.d(TAG, "Removed CUSTOMER: " + dc.getDocument().getData());
+                                    Customer removedCustomer = dc.getDocument().toObject(Customer.class);
+                                    mTicketList.remove(String.valueOf(removedCustomer.getTicket())); // Value 으로 item 삭제하기 위해 ticket 을 String으로 변환하여 사용함.
+                                    mWaitingActivityView.modified(mTicketList.size());
+                                    mWaitingActivityView.speak(String.valueOf(removedCustomer.getTicket()));
+                                    break;
+                                default:
+                                    break;
                             }
                         }
-                        mWaitingActivityView.modified(customers.size());
                     }
                 });
     }
+
 }

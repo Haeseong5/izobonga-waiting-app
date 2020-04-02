@@ -7,4 +7,6 @@ public interface WaitingActivityView {
 
     void modified(long size);
 
+    void speak(String ticket);
+
 }

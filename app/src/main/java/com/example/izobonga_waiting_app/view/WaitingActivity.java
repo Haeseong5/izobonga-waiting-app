@@ -13,6 +13,7 @@ import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.databinding.ActivityWaitingBinding;
 import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
+import com.example.izobonga_waiting_app.service.TTSService;
 import com.example.izobonga_waiting_app.service.WaitingService;
 import com.example.izobonga_waiting_app.view.dialog.ChildDialog;
 import com.example.izobonga_waiting_app.view.dialog.TotalDialog;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 public class WaitingActivity extends BaseActivity implements WaitingActivityView {
     private final String TAG = WaitingActivity.class.getName();
     FireBaseApi firebaseApi;
+    TTSService mTTsService;
     ActivityWaitingBinding binding;
     ArrayList<String> numbers;
     TicketDialog mTicketDialog;
@@ -45,6 +47,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         numbers = new ArrayList<>();
 
         binding.setClickCallback(clickListener);
+        mTTsService = new TTSService(this);
     }
 
     private void tryWaiting(int personnelNumber, int childNumber){
@@ -140,7 +143,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
 
     public void waitingListener(){
         WaitingService waitingService = new WaitingService(this);
-        waitingService.waitingListener();
+        waitingService.setWaitingEventListener();
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -205,7 +208,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
             }
         }
     };
-//
+
 
     @Override
     public void validateSuccess(String message, int ticket) {
@@ -230,5 +233,10 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     @Override
     public void modified(long size) {
         binding.waitingCountText.setText(String.valueOf(size));
+    }
+
+    @Override
+    public void speak(String ticket) {
+        mTTsService.speak(ticket);
     }
 }

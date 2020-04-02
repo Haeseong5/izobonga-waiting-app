@@ -94,7 +94,7 @@ public class CallService {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED: //초기화시 호출
-//                                    Log.d(TAG, "ADDDE CUSTOMER: " + dc.getDocument().getData());
+                                    Log.d(TAG, "ADDDE CUSTOMER: " + dc.getDocument().getData());
                                     break;
                                 case MODIFIED:
                                     Log.d(TAG, "Modified CUSTOMER: " + dc.getDocument().getData());
