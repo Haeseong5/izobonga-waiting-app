@@ -350,10 +350,10 @@
                     android:layout_height="0dp">
                     <RelativeLayout android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:id="@+id/btn_delete"
+                        android:id="@+id/waiting_btn_delete"
                         android:layout_height="match_parent">
 
-                        <androidx.appcompat.widget.AppCompatImageView
+                        <ImageView
                             android:layout_width="40dp"
                             android:background="@drawable/ic_delete_num"
                             android:id="@+id/ivDelete"

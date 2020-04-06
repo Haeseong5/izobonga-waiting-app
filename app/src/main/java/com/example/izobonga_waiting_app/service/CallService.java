@@ -1,6 +1,8 @@
 package com.example.izobonga_waiting_app.service;
 
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -122,11 +124,29 @@ public class CallService {
         docRef.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
             // [START_EXCLUDE]
             @Override
-            public void onComplete(@NonNull Task<Void> task) {}
+            public void onComplete(@NonNull Task<Void> task) {
+                mCallActivityView.validateSuccessResetTicket(task.toString());
+            }
             // [START_EXCLUDE]
         });
     }
 
-    //티켓 번호만 초기화.
+    //대기고객 전체삭제/
 
+    //티켓 번호만 초기화.
+    //destroy 될 때 리스너 해제.
+
+
+    public void sendSMS(String phoneNumber, String message){
+        try {
+            //전송
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+            mCallActivityView.validateSuccessSMS("메세지 전송 성공");
+        } catch (Exception e) {
+            e.printStackTrace();
+            mCallActivityView.validateFailureSMS("메세지 전송 실패. 없는 번호 입니다.");
+
+        }
+    }
 }

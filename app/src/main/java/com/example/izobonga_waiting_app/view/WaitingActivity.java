@@ -179,11 +179,15 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
                 case R.id.btn9:
                     binding.waitingPhoneText.append("9");
                     break;
-                case R.id.btn_delete:
+                case R.id.waiting_btn_delete:
+                    printLog("delete0", String.valueOf(binding.waitingPhoneText.getText().length()));
+
                     int length = binding.waitingPhoneText.getText().length();
                     if (length > 3) {
                         binding.waitingPhoneText.getText().delete(length - 1, length);
                     }
+                    printLog("delete", String.valueOf(length));
+
                     break;
                 case R.id.btn0:
                     binding.waitingPhoneText.append("0");
@@ -238,5 +242,16 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     @Override
     public void speak(String ticket) {
         mTTsService.speak(ticket);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        mTTsService.removeTTS();
+        if(mTTsService.tts != null){
+            mTTsService.tts.stop();
+            mTTsService.tts.shutdown();
+            mTTsService.tts = null;
+        }
     }
 }
