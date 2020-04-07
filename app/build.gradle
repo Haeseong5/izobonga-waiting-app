@@ -36,5 +36,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
     implementation 'com.google.firebase:firebase-firestore:21.4.0'
+    implementation 'gun0912.ted:tedpermission:2.2.2'  //https://gun0912.tistory.com/61
+
 
 }

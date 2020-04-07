@@ -2,10 +2,18 @@ package com.example.izobonga_waiting_app.view;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,14 +27,14 @@ import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.interfaces.CallActivityView;
 import com.example.izobonga_waiting_app.model.Customer;
 import com.example.izobonga_waiting_app.service.CallService;
-import com.example.izobonga_waiting_app.service.MediaPlayerService;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.util.ArrayList;
 
 //로컬영역 추가
 public class CallActivity extends BaseActivity implements CallActivityView {
     private final String TAG = CallActivity.class.getName();
-    MediaPlayerService mMediaPlayerService;
+    MediaPlayer mMediaPlayer;
     RecyclerView recyclerView;
     TextView tvNoCustomerText;
     Toolbar mToolbar;
@@ -40,9 +48,10 @@ public class CallActivity extends BaseActivity implements CallActivityView {
         initView();
         tryInitWaitingCustomer();
         setWaitingDataListener();
-
-        mMediaPlayerService = new MediaPlayerService(this);
-
+        if (mMediaPlayer == null){
+            mMediaPlayer = MediaPlayer.create(this, R.raw.sound_alarm_file);
+        }
+        checkPermission();
     }
 
     private void initView(){
@@ -105,10 +114,26 @@ public class CallActivity extends BaseActivity implements CallActivityView {
         callService.resetTicket();
     }
 
-    private void tryCallSMS(String phoneNumber, String message){
+    private void tryCallSMS(String phoneNumber, String message, int ticket){
         CallService callService = new CallService(this);
-        callService.sendSMS(phoneNumber, message);
+        callService.sendSMS(phoneNumber, message, ticket);
     }
+
+    private void tryAlarm(){
+        if (mMediaPlayer != null){
+            mMediaPlayer.start();
+        }
+    }
+
+    private void checkPermission() {
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setRationaleMessage("호출 메세지를 전송하기 위해 SMS전송 접근 권한이 필요해요")
+                .setDeniedMessage("왜 거부하셨어요...\n하지만 [설정] > [권한] 에서 권한을 허용할 수 있어요.")
+                .setPermissions(Manifest.permission.SEND_SMS)
+                .check();
+    }
+
     @Override
     public void initCustomers(ArrayList<Customer> customers) {
         this.customers = customers;
@@ -123,7 +148,7 @@ public class CallActivity extends BaseActivity implements CallActivityView {
     @Override
     public void added(Customer customer) {
         printLog("modified", "modify");
-        mMediaPlayerService.start(); //함수 추가로 정의하면 좋을 듯
+        tryAlarm();
         customers.add(customer);
         setZeroDataMessage();
         adapter.notifyDataSetChanged();
@@ -132,7 +157,7 @@ public class CallActivity extends BaseActivity implements CallActivityView {
     //고객이 삭제되었을 때 호출됨.
     @Override
     public void removed(int position) {
-        tryCallSMS(customers.get(position).getPhone(), getString(R.string.sms_message)); //문자메세지 전송
+        tryCallSMS(customers.get(position).getPhone(), getString(R.string.sms_message),customers.get(position).getTicket()); //문자메세지 전송
         adapter.removeItem(position);
         setZeroDataMessage();
         adapter.notifyDataSetChanged();
@@ -180,11 +205,14 @@ public class CallActivity extends BaseActivity implements CallActivityView {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
 //        mMediaPlayerService.remove();
-        if (mMediaPlayerService.mediaPlayer!=null){
-            mMediaPlayerService.mediaPlayer.release();
-            mMediaPlayerService.mediaPlayer = null;
+        Log.d("BASE ACTIVITY", "DESTROY");
+
+        if (mMediaPlayer!=null){
+            mMediaPlayer.release();
+            mMediaPlayer = null;
         }
+        super.onDestroy();
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.izobonga_waiting_app;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.util.Log;
 import android.view.View;
@@ -8,7 +9,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
+import com.gun0912.tedpermission.PermissionListener;
 
+import java.util.List;
+
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;
     public TicketDialog mTicketDialog;
@@ -38,6 +43,18 @@ public class BaseActivity extends AppCompatActivity {
     public void onClickListener(View view){
 
     }
+
+    public PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+//                Toast.makeText(Activity1.this, "권한 허가", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(List<String> deniedPermissions) {
+
+        }
+    };
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -71,14 +88,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //비표시 시(정지상태) 통신이나 센서처리를 정지
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("BASE ACTIVITY", "DESTROY");
-        //폐기 시 필요없는 리소스를 해체, 액티비티 참조는 모두 정리한다.
-        //뷰는 액티비티가 폐기된 다음 Garbage Collection에 의해 자동으로 메모리에서 해체
     }
 
     @Override

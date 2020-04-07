@@ -2,10 +2,10 @@ package com.example.izobonga_waiting_app.service;
 
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 
 import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.interfaces.CallActivityView;
@@ -137,11 +137,14 @@ public class CallService {
     //destroy 될 때 리스너 해제.
 
 
-    public void sendSMS(String phoneNumber, String message){
+    public void sendSMS(String phoneNumber, String message, int ticket){
         try {
+//            String pn = phoneNumber.replace("-","");
+//            Log.d("pn",pn);
+            String msg = String.format(message, ticket);
             //전송
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+            smsManager.sendTextMessage(phoneNumber, null, msg, null, null);
             mCallActivityView.validateSuccessSMS("메세지 전송 성공");
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,4 +152,5 @@ public class CallService {
 
         }
     }
+
 }
