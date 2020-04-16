@@ -1,8 +1,11 @@
 package com.example.izobonga_waiting_app.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.Timestamp;
 
-public class Customer {
+public class Customer implements Parcelable {
     private Timestamp timestamp;
     private String phone;
     private int ticket;
@@ -11,6 +14,27 @@ public class Customer {
     private String docID;
     public Customer(){
     }
+
+    protected Customer(Parcel in) {
+        timestamp = in.readParcelable(Timestamp.class.getClassLoader());
+        phone = in.readString();
+        ticket = in.readInt();
+        personnel = in.readInt();
+        child = in.readInt();
+        docID = in.readString();
+    }
+
+    public static final Creator<Customer> CREATOR = new Creator<Customer>() {
+        @Override
+        public Customer createFromParcel(Parcel in) {
+            return new Customer(in);
+        }
+
+        @Override
+        public Customer[] newArray(int size) {
+            return new Customer[size];
+        }
+    };
 
     public Timestamp getTimestamp() {
         return timestamp;
@@ -58,5 +82,20 @@ public class Customer {
 
     public void setDocID(String docID) {
         this.docID = docID;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeParcelable(timestamp, i);
+        parcel.writeString(phone);
+        parcel.writeInt(ticket);
+        parcel.writeInt(personnel);
+        parcel.writeInt(child);
+        parcel.writeString(docID);
     }
 }

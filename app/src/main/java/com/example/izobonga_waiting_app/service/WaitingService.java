@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CUSTOMER;
+import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CALL;
 import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_MANAGER;
 
 public class WaitingService {
@@ -40,7 +41,7 @@ public class WaitingService {
 
     public void increaseWaitingCount(final Timestamp time, final String phone, final int personnel, final int child) {
         FirebaseFirestore db = FireBaseApi.getInstance();
-        DocumentReference customerRef = db.collection("manager").document("waiting");
+        DocumentReference customerRef = db.collection(COLLECTION_CALL).document("waiting");
         customerRef
                 .update("ticket", FieldValue.increment(1))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -62,7 +63,7 @@ public class WaitingService {
 
     public void getTicket(final Timestamp time, final String phone, final int personnel, final int child) {
         FirebaseFirestore db = FireBaseApi.getInstance();
-        DocumentReference docRef = db.collection(COLLECTION_MANAGER).document("waiting");
+        DocumentReference docRef = db.collection(COLLECTION_CALL).document("waiting");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -73,6 +74,7 @@ public class WaitingService {
                         Ticket waitingData = document.toObject(Ticket.class);
                         int ticket = waitingData.getTicket();
                         addData(time, phone, personnel, ticket, child);
+                        addCustomer(time, phone, personnel, child);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -98,7 +100,7 @@ public class WaitingService {
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG,
                                 "DocumentSnapshot written with ID: " + documentReference.getId());
-                        setDocID(documentReference.getId());
+                        setDocID(COLLECTION_CUSTOMER, documentReference.getId());
                         mWaitingActivityView.validateSuccess("success", ticket);
                     }
                 })
@@ -112,8 +114,8 @@ public class WaitingService {
     }
 
     //document 삭제를 용이하게 하기 위해 document 의 필드에 docID 등록
-    public void setDocID(final String docID) {
-        DocumentReference customerRef = FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).document(docID);
+    public void setDocID(String collection, final String docID) {
+        DocumentReference customerRef = FireBaseApi.getInstance().collection(collection).document(docID);
         customerRef
                 .update("docID", docID)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -126,6 +128,30 @@ public class WaitingService {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error updating document", e);
+                    }
+                });
+    }
+
+    //고객 정보 등록
+    public void addCustomer(Timestamp time, String phone, int personnel, int child) {
+        Customer customer = new Customer();
+        customer.setTimestamp(time);
+        customer.setPhone(phone);
+        customer.setChild(child);
+        customer.setPersonnel(personnel);
+        FireBaseApi.getInstance().collection(COLLECTION_MANAGER).add(customer)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG,
+                                "DocumentSnapshot written with ID: " + documentReference.getId());
+                        setDocID(COLLECTION_MANAGER, documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
                     }
                 });
     }

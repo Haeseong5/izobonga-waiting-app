@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.adapter;
+package com.example.izobonga_waiting_app.view;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +25,9 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View v, int position);
+        void onItemClickCall(View v, int position);
+        void onItemClickDelete(View v, int position);
+
     }
 
     // OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드
@@ -43,12 +45,18 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         holder.tvTicket.setText(String.valueOf(customers.get(position).getTicket()));
         holder.tvPhone.setText(customers.get(position).getPhone());
         holder.tvPersonnel.setText(String.valueOf(customers.get(position).getPersonnel()));
         holder.tvChild.setText(String.valueOf(customers.get(position).getChild()));
         Log.d("CallAdapter ", customers.get(position).getPhone());
+        holder.btDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onItemClickDelete(holder.itemView, position);
+            }
+        });
     }
 
     @Override
@@ -75,6 +83,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
         TextView tvPersonnel;
         TextView tvChild;
         Button btCall;
+        Button btDelete;
 
         public MyViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -83,7 +92,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
             tvPersonnel = itemLayoutView.findViewById(R.id.item_customer_personnel);
             tvChild = itemLayoutView.findViewById(R.id.item_customer_child);
             btCall = itemLayoutView.findViewById(R.id.item_customer_call_button);
-
+            btDelete = itemLayoutView.findViewById(R.id.item_customer_delete_button);
             btCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -91,11 +100,12 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
                     if (pos != RecyclerView.NO_POSITION) {
                         // 리스너 객체의 메서드 호출.
                         if (mListener != null) {
-                            mListener.onItemClick(view, pos);
+                            mListener.onItemClickCall(view, pos);
                         }
                     }
                 }
             });
+
             // 아이템 클릭 이벤트 처리.
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -104,7 +114,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
 //                    if (pos != RecyclerView.NO_POSITION) {
 //                        // 리스너 객체의 메서드 호출.
 //                        if (mListener != null) {
-//                            mListener.onItemClick(v, pos) ;
+//                            mListener.onItemClickCall(v, pos) ;
 //                        }
 //                    }
 //                }

@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CUSTOMER;
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_MANAGER;
+import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CALL;
 
 public class CallService {
     private final String TAG = "CallService";
@@ -62,22 +62,42 @@ public class CallService {
 
 
     //대기 고객 호출 버튼 클릭시 호출
-    public void deleteWaitingCustomer(final String docID, final int position) {
+    public void callWaitingCustomer(final String docID, final int position) {
 //        showProgressDialog();
         FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).document(docID)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("deleteWaitingCustomer", "DocumentSnapshot successfully deleted!");
-                        mCallActivityView.removed(position);
+                        Log.d("callWaitingCustomer", "DocumentSnapshot successfully deleted!");
+                        mCallActivityView.called(position);
 
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("deleteWaitingCustomer", "Error deleting document", e);
+                        Log.w("callWaitingCustomer", "Error deleting document", e);
+                    }
+                });
+    }
+    //대기 고객 호출 버튼 클릭시 호출
+    public void deleteCustomer(final String docID, final int position) {
+//        showProgressDialog();
+        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).document(docID)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("callWaitingCustomer", "DocumentSnapshot successfully deleted!");
+                        mCallActivityView.deleted(position);
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("callWaitingCustomer", "Error deleting document", e);
                     }
                 });
     }
@@ -114,9 +134,8 @@ public class CallService {
                 });
     }
 
-    //manager컬렉션의 waiting, queue 필드 초기화.
     public void resetTicket(){
-        DocumentReference docRef = FireBaseApi.getInstance().collection(COLLECTION_MANAGER).document("waiting");
+        DocumentReference docRef = FireBaseApi.getInstance().collection(COLLECTION_CALL).document("waiting");
 
         Map<String,Object> updates = new HashMap<>();
         updates.put("ticket", 0);
@@ -133,7 +152,6 @@ public class CallService {
 
     //대기고객 전체삭제/
 
-    //티켓 번호만 초기화.
     //destroy 될 때 리스너 해제.
 
 

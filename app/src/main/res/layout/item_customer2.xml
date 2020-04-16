@@ -26,22 +26,16 @@
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     android:textSize="20dp"
-                    android:text="대기번호 "/>
+                    android:text="방문한 날 : "/>
                 <TextView
-                    android:id="@+id/item_customer_ticket"
+                    android:id="@+id/item_customer2_tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     android:textSize="20dp"
-                    android:text="0"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:text="번 손님"/>
+                    android:text="2020-00-00"/>
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,7 +48,7 @@
                     android:textColor="@color/colorBlack"
                     android:text="핸드폰 번호 : "/>
                 <TextView
-                    android:id="@+id/item_customer_phone"
+                    android:id="@+id/item_customer2_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
@@ -72,7 +66,7 @@
                     android:textColor="@color/colorBlack"
                     android:text="인원 : "/>
                 <TextView
-                    android:id="@+id/item_customer_personnel"
+                    android:id="@+id/item_customer2_personnel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
@@ -85,7 +79,7 @@
                     android:textColor="@color/colorBlack"
                     android:text="  (유아: "/>
                 <TextView
-                    android:id="@+id/item_customer_child"
+                    android:id="@+id/item_customer2_child"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
@@ -100,29 +94,14 @@
 
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout
+        <Button
+            android:id="@+id/item_customer2_delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <Button
-                android:id="@+id/item_customer_call_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_shape_blue"
-                android:text="호출"
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp"
-                android:textColor="@color/colorWhite"/>
-            <Button
-                android:id="@+id/item_customer_delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_shape_white"
-                android:text="삭제"
-                android:textStyle="bold"
-                android:textColor="@color/colorBlack"/>
-        </LinearLayout>
-
+            android:background="@drawable/button_shape_blue"
+            android:text="삭제하기"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

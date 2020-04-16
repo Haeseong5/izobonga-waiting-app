@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, WaitingActivity.class));
                 break;
             case R.id.main_manage_button:
-//                startActivity(new Intent(MainActivity.this, ManageAc.class));
+                startActivity(new Intent(MainActivity.this, ManagerActivity.class));
                 break;
             default:
                 break;

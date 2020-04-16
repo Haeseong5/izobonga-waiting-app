@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_item_reset"
-        android:title="대기열 초기화"
+        android:title="티켓번호 초기화"
         app:showAsAction="never"/>
 </menu>

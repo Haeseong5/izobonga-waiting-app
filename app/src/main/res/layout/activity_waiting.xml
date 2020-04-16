@@ -39,7 +39,7 @@
                     android:id="@+id/waiting_select_language"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/button_shape_white"
                     android:text="번호표 받기"
                     />
             </LinearLayout>

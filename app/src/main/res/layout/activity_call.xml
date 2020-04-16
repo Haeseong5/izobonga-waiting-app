@@ -6,14 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".view.CallActivity">
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/call_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.appbar.AppBarLayout>
+    <include
+        layout="@layout/toolbar_m"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/call_recyclerView"
         android:layout_width="match_parent"
@@ -24,7 +18,7 @@
         android:layout_height="wrap_content"
         android:text="@string/no_customer"
         android:textColor="@color/colorBlack"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:visibility="gone"/>
 
 </LinearLayout>

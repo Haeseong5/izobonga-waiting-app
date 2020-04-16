@@ -2,27 +2,23 @@ package com.example.izobonga_waiting_app.view;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.izobonga_waiting_app.BaseActivity;
-import com.example.izobonga_waiting_app.adapter.CallAdapter;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.interfaces.CallActivityView;
 import com.example.izobonga_waiting_app.model.Customer;
@@ -32,7 +28,7 @@ import com.gun0912.tedpermission.TedPermission;
 import java.util.ArrayList;
 
 //로컬영역 추가
-public class CallActivity extends BaseActivity implements CallActivityView {
+public class CallActivity extends BaseActivity implements CallActivityView{
     private final String TAG = CallActivity.class.getName();
     MediaPlayer mMediaPlayer;
     RecyclerView recyclerView;
@@ -58,6 +54,14 @@ public class CallActivity extends BaseActivity implements CallActivityView {
         tvNoCustomerText = findViewById(R.id.call_tv_message);
         mToolbar = findViewById(R.id.call_toolbar);
         setSupportActionBar(mToolbar);
+        // Get the ActionBar here to configure the way it behaves.
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+            actionBar.setTitle(getString(R.string.call_title));
+        }
     }
 
     public void initRecyclerView() {
@@ -70,14 +74,21 @@ public class CallActivity extends BaseActivity implements CallActivityView {
         adapter = new CallAdapter(customers);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new CallAdapter.OnItemClickListener() {
+
             @Override
-            public void onItemClick(View v, int position) {
-                // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
-                printToast(String.valueOf(position));
+            public void onItemClickCall(View v, int position) {
                 showProgressDialog();
                 tryCallCustomer(customers.get(position).getDocID(), position); //docID, index
             }
+
+            @Override
+            public void onItemClickDelete(View v, int position) {
+                showProgressDialog();
+                tryDelete(customers.get(position).getDocID(), position); //docID, index
+            }
         });
+
+
     }
 
     public void setZeroDataMessage(){
@@ -104,9 +115,14 @@ public class CallActivity extends BaseActivity implements CallActivityView {
     private void tryCallCustomer(final String docID, final int position) {
         showProgressDialog();
         CallService callService = new CallService(this);
-        callService.deleteWaitingCustomer(docID, position);
+        callService.callWaitingCustomer(docID, position);
     }
-
+    //대기고객 호출하기 버튼 누르면 DB에서 아이템 제거 후 리스트 갱신.
+    private void tryDelete(final String docID, final int position) {
+        showProgressDialog();
+        CallService callService = new CallService(this);
+        callService.deleteCustomer(docID, position);
+    }
     //대기고객 호출하기 버튼 누르면 DB에서 아이템 제거 후 리스트 갱신.
     private void tryResetTicket() {
         showProgressDialog();
@@ -133,6 +149,17 @@ public class CallActivity extends BaseActivity implements CallActivityView {
                 .setPermissions(Manifest.permission.SEND_SMS)
                 .check();
     }
+//
+//    @Override
+//    public void onItemClickDelete(View v, final int position) {
+//        Button btDelete = v.findViewById(R.id.item_customer_delete_button);
+//        btDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+//    }
 
     @Override
     public void initCustomers(ArrayList<Customer> customers) {
@@ -156,8 +183,16 @@ public class CallActivity extends BaseActivity implements CallActivityView {
 
     //고객이 삭제되었을 때 호출됨.
     @Override
-    public void removed(int position) {
+    public void called(int position) {
         tryCallSMS(customers.get(position).getPhone(), getString(R.string.sms_message),customers.get(position).getTicket()); //문자메세지 전송
+        adapter.removeItem(position);
+        setZeroDataMessage();
+        adapter.notifyDataSetChanged();
+        hideProgressDialog();
+    }
+
+    @Override
+    public void deleted(int position) {
         adapter.removeItem(position);
         setZeroDataMessage();
         adapter.notifyDataSetChanged();

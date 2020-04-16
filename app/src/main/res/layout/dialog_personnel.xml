@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_remove_24px"
-            android:background="@drawable/button_shape"/>
+            android:background="@drawable/button_shape_white"/>
         <TextView
             android:id="@+id/child_number"
             android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_black_24dp"
-            android:background="@drawable/button_shape"/>
+            android:background="@drawable/button_shape_white"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -57,13 +57,13 @@
             android:id="@+id/child_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_shape"
+            android:background="@drawable/button_shape_white"
             android:text="이전"/>
         <Button
             android:id="@+id/child_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_shape"
+            android:background="@drawable/button_shape_white"
             android:layout_alignParentRight="true"
             android:text="다음" />
 
