@@ -12,14 +12,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.izobonga_waiting_app.BaseActivity;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.interfaces.ManageActivityView;
 import com.example.izobonga_waiting_app.model.Customer;
 import com.example.izobonga_waiting_app.service.ManageService;
+import com.example.izobonga_waiting_app.view.CallActivity;
 import com.example.izobonga_waiting_app.view.CallAdapter;
 import com.example.izobonga_waiting_app.view.CustomerAdapter;
+import com.example.izobonga_waiting_app.view.ManagerActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CustomerFragment extends Fragment implements ManageActivityView {
     public static final String CUSTOMER_FRAGMENT = "CUSTOMER_FRAGMENT";
@@ -56,6 +60,8 @@ public class CustomerFragment extends Fragment implements ManageActivityView {
             @Override
             public void onItemClick(View v, int position) {
                 // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
+                ((ManagerActivity) Objects.requireNonNull(getActivity())).showProgressDialog();
+
                 tryDeleteCustomer(customers.get(position).getDocID(), position); //docID, index
             }
         });
@@ -82,6 +88,8 @@ public class CustomerFragment extends Fragment implements ManageActivityView {
         Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
         mAdapter.removeItem(position);
         mAdapter.notifyDataSetChanged();
+        ((ManagerActivity) Objects.requireNonNull(getActivity())).hideProgressDialog();
+
     }
 
     @Override

@@ -2,10 +2,12 @@ package com.example.izobonga_waiting_app.view;
 
 import androidx.databinding.DataBindingUtil;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 
 import com.example.izobonga_waiting_app.BaseActivity;
@@ -37,6 +39,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hideStatusBar();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_waiting);
         binding.setActivity(this);
         firebaseApi = new FireBaseApi();
@@ -213,7 +216,17 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         }
     };
 
-
+    public void hideStatusBar(){
+        if (Build.VERSION.SDK_INT < 16) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }else{
+            View decorView = getWindow().getDecorView();
+            // Hide the status bar.
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
     @Override
     public void validateSuccess(String message, int ticket) {
         hideProgressDialog();

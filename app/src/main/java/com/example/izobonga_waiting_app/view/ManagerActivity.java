@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class ManagerActivity extends BaseActivity implements ManageActivityView {
     private ViewPager mViewPager;
     public TabLayout mTabLayout;
-    private TextView mTvCustomerSize, mTvEmail;
+    private TextView mTvCustomerSize;
     private ArrayList<Customer> customers;
     private Toolbar toolbar;
 //    private ArrayList<RecordResult> mRecordList;
@@ -31,12 +31,12 @@ public class ManagerActivity extends BaseActivity implements ManageActivityView 
         initView();
         tryInitData();
 
+
     }
 
     private void initView() {
         toolbar = findViewById(R.id.call_toolbar);
         mTvCustomerSize = findViewById(R.id.profile_tv_name);
-        mTvEmail = findViewById(R.id.profile_tv_email);
         mTabLayout = findViewById(R.id.profile_tab_layout);
         mViewPager = findViewById(R.id.customer_view_pager);
 

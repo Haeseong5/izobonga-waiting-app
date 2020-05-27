@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -11,6 +12,18 @@
         <item name="toolbarStyle">@style/ToolbarStyle.Dark</item> <!--Toolbar 스타일-->
         <item name="actionMenuTextColor">@color/colorBlue</item> <!--액션 메뉴의 텍스트 색상-->
         <item name="colorControlNormal">@color/colorWhite</item> <!--홈/뒤로가기 버튼의 색상-->
+
+
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="android:windowFullscreen">true</item>-->
+        <!-- Base application theme. -->
+            <!-- Customize your theme here. -->
+        <item name="android:buttonStyle">@style/CustomButtonStyle</item>
+        <item name="android:editTextStyle">@style/CustomEditTextStyle</item>
+        <item name="android:radioButtonStyle">@style/CustomRadioButtonStyle</item>
+        <item name="android:checkboxStyle">@style/CustomCheckboxStyle</item>
+        <item name="android:textViewStyle">@style/CustomTextViewStyle</item>
     </style>
 
     <style name="CustomKeyBoardStyle" parent="@style/Widget.AppCompat.Button.Borderless">
@@ -27,4 +40,28 @@
         <item name="android:textSize">15dp</item> <!-- Toolbar의 타이틀 텍스트 사이즈-->
     </style>
 
+    <style name="CustomTextViewStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/font_style</item>
+    </style>
+    <style name="CustomButtonStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:fontFamily">@font/font_style</item>
+    </style>
+    <style name="CustomEditTextStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="android:fontFamily">@font/font_style</item>
+    </style>
+    <style name="CustomRadioButtonStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/font_style</item>
+    </style>
+    <style name="CustomCheckboxStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/font_style</item>
+    </style>
+
+
+    <style name="DefaultTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

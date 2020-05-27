@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorFadedJade"
+            android:background="@color/colorBlue"
             android:orientation="vertical"
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -30,18 +30,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이조본가"
+                    android:text="@string/app_name"
                     android:textColor="@color/colorWhite"
                     android:layout_weight="1"
                     android:textStyle="bold"
                     android:textSize="40dp"/>
-                <Button
-                    android:id="@+id/waiting_select_language"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_shape_white"
-                    android:text="번호표 받기"
-                    />
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
@@ -50,31 +43,31 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="20dp"
                 android:gravity="center_vertical"
-                android:layout_weight="1"
                 android:textSize="40dp"/>
 
             <LinearLayout
                 android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:background="@color/colorChestnut"
+                android:layout_height="0dp"
+                android:background="@color/colorWhite"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:layout_alignParentBottom="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="현재 웨이팅"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlue"
                     android:textSize="30dp"/>
                 <TextView
                     android:id="@+id/waiting_count_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0 팀"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlue"
                     android:textSize="50dp"/>
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -152,7 +145,7 @@
                             android:layout_width="match_parent"
                             android:text="1"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:id="@+id/btn1"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
@@ -174,7 +167,7 @@
                             android:layout_width="match_parent"
                             android:text="2"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:id="@+id/btn2"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
@@ -195,7 +188,7 @@
                             android:layout_width="match_parent"
                             android:text="3"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
                             android:id="@+id/btn3"
                             android:layout_height="match_parent"/>
@@ -222,7 +215,7 @@
                             android:layout_width="match_parent"
                             android:text="4"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
                             android:id="@+id/btn4"
@@ -243,7 +236,7 @@
                             android:layout_width="match_parent"
                             android:text="5"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:id="@+id/btn5"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
@@ -263,7 +256,7 @@
                             android:layout_width="match_parent"
                             android:text="6"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
                             android:id="@+id/btn6"
@@ -290,7 +283,7 @@
                             android:layout_width="match_parent"
                             android:text="7"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
                             android:id="@+id/btn7"
@@ -311,7 +304,7 @@
                             android:layout_width="match_parent"
                             android:text="8"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
                             android:id="@+id/btn8"
@@ -331,7 +324,7 @@
                             android:layout_width="match_parent"
                             android:text="9"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
                             android:id="@+id/btn9"
@@ -379,7 +372,7 @@
                             android:layout_width="match_parent"
                             android:text="0"
                             android:textColor="@color/colorBlack"
-                            android:textSize="50dp"
+                            android:textSize="40sp"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 
                             android:id="@+id/btn0"
@@ -399,7 +392,7 @@
                             android:layout_width="match_parent"
                             android:text="입력"
                             android:textColor="@color/colorBlack"
-                            android:textSize="30dp"
+                            android:textSize="40sp"
                             android:id="@+id/btn_input"
                             android:onClick="@{(v)->clickCallback.onClick(v)}"
 

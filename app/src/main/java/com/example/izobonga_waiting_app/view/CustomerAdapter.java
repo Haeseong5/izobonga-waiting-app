@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.model.Customer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import static com.example.izobonga_waiting_app.FireBaseApi.DATE_FORMAT;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyViewHolder> {
     private ArrayList<Customer> customers;
@@ -43,7 +46,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvDate.setText(String.valueOf(customers.get(position).getTimestamp()));
+
+        holder.tvDate.setText(DATE_FORMAT.format(customers.get(position).getTimestamp().toDate()));
         holder.tvPhone.setText(customers.get(position).getPhone());
         holder.tvPersonnel.setText(String.valueOf(customers.get(position).getPersonnel()));
         holder.tvChild.setText(String.valueOf(customers.get(position).getChild()));

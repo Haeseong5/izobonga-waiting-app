@@ -1,20 +1,20 @@
 package com.example.izobonga_waiting_app.view;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +40,7 @@ public class CallActivity extends BaseActivity implements CallActivityView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //상태바 없애기
         setContentView(R.layout.activity_call);
         initView();
         tryInitWaitingCustomer();
@@ -55,7 +56,7 @@ public class CallActivity extends BaseActivity implements CallActivityView{
         mToolbar = findViewById(R.id.call_toolbar);
         setSupportActionBar(mToolbar);
         // Get the ActionBar here to configure the way it behaves.
-        ActionBar actionBar = getSupportActionBar();
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
             actionBar.setDisplayShowTitleEnabled(false);
@@ -149,7 +150,8 @@ public class CallActivity extends BaseActivity implements CallActivityView{
                 .setPermissions(Manifest.permission.SEND_SMS)
                 .check();
     }
-//
+
+    //
 //    @Override
 //    public void onItemClickDelete(View v, final int position) {
 //        Button btDelete = v.findViewById(R.id.item_customer_delete_button);
