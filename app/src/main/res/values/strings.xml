@@ -4,6 +4,12 @@
     <string name="tts_message">%s번 고객님. 입장해주세요.</string>
     <string name="sms_message">[이조본가]\n웨이팅 번호 %s번 고객님.\n오래 기다리셨죠? 지금 입장해주세요!</string>
     <string name="no_customer">현재 대기 중인 고객님이 없습니다.</string>
-    <string name="call_title">대기고객 관리</string>
+    <string name="call_title">현재 대기 중인 고객</string>
+    <string name="manager_title">전체 대기 고객 조회</string>
+
+    <string name="dialog_title">총 인원</string>
+    <string name="dialog_sub_title">총 인원을 입력해주세요.</string>
+    <string name="child_dialog_title">유아 (7세 이하)</string>
+    <string name="child_dialog_sub_title">유아 인원수를 입력해주세요.</string>
 
 </resources>

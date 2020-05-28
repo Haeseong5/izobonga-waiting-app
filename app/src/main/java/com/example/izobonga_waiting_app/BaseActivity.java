@@ -16,7 +16,6 @@ import java.util.List;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;
-    public TicketDialog mTicketDialog;
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {

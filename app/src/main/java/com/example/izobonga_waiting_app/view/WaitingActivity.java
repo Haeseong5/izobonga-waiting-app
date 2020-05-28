@@ -17,8 +17,7 @@ import com.example.izobonga_waiting_app.databinding.ActivityWaitingBinding;
 import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
 import com.example.izobonga_waiting_app.service.TTSService;
 import com.example.izobonga_waiting_app.service.WaitingService;
-import com.example.izobonga_waiting_app.view.dialog.ChildDialog;
-import com.example.izobonga_waiting_app.view.dialog.TotalDialog;
+import com.example.izobonga_waiting_app.view.dialog.PersonnelDialog;
 import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
 import com.google.firebase.Timestamp;
 
@@ -31,8 +30,8 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     ActivityWaitingBinding binding;
     ArrayList<String> numbers;
     TicketDialog mTicketDialog;
-    TotalDialog mTotalDialog;
-    ChildDialog mChildDialog;
+    PersonnelDialog mTotalDialog, mChildDialog;
+//    ChildDialog mChildDialog;
 
     int mChild;
     int mTotal;
@@ -43,7 +42,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         binding = DataBindingUtil.setContentView(this, R.layout.activity_waiting);
         binding.setActivity(this);
         firebaseApi = new FireBaseApi();
-        waitingListener();
+        setWaitingListener();
         binding.waitingPhoneText.addTextChangedListener(new PhoneNumberFormattingTextWatcher()); //입력하면 phone number form 으로 만들기
         binding.waitingPhoneText.setEnabled(false); //editText 사용 불가능하게 만들기
         binding.waitingPhoneText.setFocusable(false);
@@ -73,14 +72,11 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     //총 인원 수 선택 Dialog 다음 버튼 클릭 시 이벤트 처리
     private View.OnClickListener personnelNextListener = new View.OnClickListener() {
         public void onClick(View v) {
-            String personnelNumber = mTotalDialog.totalNumber.getText().toString();
+            String personnelNumber = mTotalDialog.mTvNumber.getText().toString();
             mTotal = Integer.parseInt(personnelNumber);
             if ( mTotal < 2){
                 printToast("2인 이상부터 예약 가능합니다,");
             }else {
-//                if (mTotalDialog != null && mTotalDialog.isShowing()){
-//                    mTotalDialog.dismiss();
-//                }
                 showChildDialog();
             }
         }
@@ -89,7 +85,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     //아동 인원 수 선택 Dialog 다음 버튼 클릭 시 이벤트 처리
     private View.OnClickListener childNextListener = new View.OnClickListener() {
         public void onClick(View v) {
-            mChild = Integer.parseInt(mChildDialog.childNumber.getText().toString());
+            mChild = Integer.parseInt(mChildDialog.mTvNumber.getText().toString());
             showProgressDialog();
             tryWaiting(mTotal, mChild);
         }
@@ -110,32 +106,28 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         public void onClick(View v) {
             mChild = 0;
             if (mChildDialog != null && mChildDialog.isShowing()){
-//                mChildDialog.dismiss();
                 mChildDialog.dismissDialog();
             }
         }
     };
 
     private void showTotalDialog(){
-        Log.d("total, ", String.valueOf(mTotal));
         if (mTotalDialog == null) {
-            mTotalDialog = new TotalDialog(WaitingActivity.this, personnelNextListener, totalPreListener);
+            mTotalDialog = new PersonnelDialog(WaitingActivity.this, personnelNextListener, totalPreListener, getString(R.string.dialog_title), getString(R.string.dialog_sub_title));
             mTotalDialog.setCancelable(false);
             mTotalDialog.setCanceledOnTouchOutside(false);
         }
         mTotalDialog.show();
     }
     private void showChildDialog(){
-        Log.d("child, ", String.valueOf(mChild));
         if (mChildDialog == null){
-            mChildDialog = new ChildDialog(WaitingActivity.this, childNextListener, childPreListener);
+            mChildDialog = new PersonnelDialog(WaitingActivity.this, childNextListener, childPreListener, getString(R.string.child_dialog_title), getString(R.string.child_dialog_sub_title));
             mChildDialog.setCancelable(false);
             mChildDialog.setCanceledOnTouchOutside(false);
         }
         mChildDialog.show();
     }
     private void showTicketDialog(int ticket){
-        Log.d("ticket", String.valueOf(ticket));
         if (mTicketDialog == null){
             mTicketDialog = new TicketDialog(WaitingActivity.this, ticketListener, ticket);
             mTicketDialog.setCancelable(false);
@@ -144,11 +136,12 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         mTicketDialog.show();
     }
 
-    public void waitingListener(){
+    public void setWaitingListener(){
         WaitingService waitingService = new WaitingService(this);
         waitingService.setWaitingEventListener();
     }
 
+    //NumberKeyPad ClickListener
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -183,14 +176,10 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
                     binding.waitingPhoneText.append("9");
                     break;
                 case R.id.waiting_btn_delete:
-                    printLog("delete0", String.valueOf(binding.waitingPhoneText.getText().length()));
-
                     int length = binding.waitingPhoneText.getText().length();
                     if (length > 3) {
                         binding.waitingPhoneText.getText().delete(length - 1, length);
                     }
-                    printLog("delete", String.valueOf(length));
-
                     break;
                 case R.id.btn0:
                     binding.waitingPhoneText.append("0");
@@ -202,15 +191,12 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
                         if(phoneNumber.length() != 13){
                             printToast("잘 못된 휴대폰 번호입니다. 다시 입력해주세요.");
                         }else{
-                            //finish input
-                            printToast(binding.waitingPhoneText.getText().toString());
                             //request server(폰번호);
                             showTotalDialog();
                         }
                     }else{
-                        printToast("disagree permission");
+                        printToast("서비스 이용약관에 동의해주셔야 합니다!");
                     }
-
                     break;
             }
         }
@@ -249,7 +235,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
 
     @Override
     public void modified(long size) {
-        binding.waitingCountText.setText(String.valueOf(size));
+        binding.waitingCountText.setText(size + "팀");
     }
 
     @Override

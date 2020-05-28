@@ -9,7 +9,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="29">false</item> <!--Status Bar 아이콘의 색상 true:검은 아이콘, false:흰 아이콘-->
 
-        <item name="toolbarStyle">@style/ToolbarStyle.Dark</item> <!--Toolbar 스타일-->
         <item name="actionMenuTextColor">@color/colorBlue</item> <!--액션 메뉴의 텍스트 색상-->
         <item name="colorControlNormal">@color/colorWhite</item> <!--홈/뒤로가기 버튼의 색상-->
 
@@ -26,19 +25,13 @@
         <item name="android:textViewStyle">@style/CustomTextViewStyle</item>
     </style>
 
+    <style name="NoStatusBar" parent="Theme.AppCompat.Light.NoActionBar" >
+                <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="CustomKeyBoardStyle" parent="@style/Widget.AppCompat.Button.Borderless">
     </style>
 
-    <!--Toolbar 스타일-->
-    <style name="ToolbarStyle.Dark" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/colorBlue</item> <!-- Toolbar의 배경색-->
-    </style>
-
-    <!-- Toolbar의 타이틀 텍스트-->
-    <style name="ToolbarTitleStyle.Dark" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">@color/colorWhite</item> <!-- Toolbar의 타이틀 텍스트 색상-->
-        <item name="android:textSize">15dp</item> <!-- Toolbar의 타이틀 텍스트 사이즈-->
-    </style>
 
     <style name="CustomTextViewStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="android:fontFamily">@font/font_style</item>

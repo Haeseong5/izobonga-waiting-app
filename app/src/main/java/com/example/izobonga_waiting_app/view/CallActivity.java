@@ -55,11 +55,12 @@ public class CallActivity extends BaseActivity implements CallActivityView{
         tvNoCustomerText = findViewById(R.id.call_tv_message);
         mToolbar = findViewById(R.id.call_toolbar);
         setSupportActionBar(mToolbar);
+
         // Get the ActionBar here to configure the way it behaves.
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
-            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
             actionBar.setTitle(getString(R.string.call_title));
         }
@@ -88,8 +89,6 @@ public class CallActivity extends BaseActivity implements CallActivityView{
                 tryDelete(customers.get(position).getDocID(), position); //docID, index
             }
         });
-
-
     }
 
     public void setZeroDataMessage(){
@@ -151,18 +150,6 @@ public class CallActivity extends BaseActivity implements CallActivityView{
                 .check();
     }
 
-    //
-//    @Override
-//    public void onItemClickDelete(View v, final int position) {
-//        Button btDelete = v.findViewById(R.id.item_customer_delete_button);
-//        btDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//    }
-
     @Override
     public void initCustomers(ArrayList<Customer> customers) {
         this.customers = customers;
@@ -213,7 +200,6 @@ public class CallActivity extends BaseActivity implements CallActivityView{
 
     @Override
     public void validateSuccessResetTicket(String message) {
-        printLog("reset ticket", message);
         hideProgressDialog();
     }
 
@@ -229,27 +215,28 @@ public class CallActivity extends BaseActivity implements CallActivityView{
     @Override
     public boolean onOptionsItemSelected (MenuItem item)
     {
-        Toast toast = Toast.makeText(getApplicationContext(),"", Toast.LENGTH_LONG);
         switch(item.getItemId())
         {
             case R.id.menu_item_reset:
                 tryResetTicket();
                 break;
+            case android.R.id.home: //toolbar의 back버튼 눌렀을 때 동작
+                finish();
+                break;
+            default:
+                break;
+
         }
-        toast.show();
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onDestroy() {
 //        mMediaPlayerService.remove();
-        Log.d("BASE ACTIVITY", "DESTROY");
-
         if (mMediaPlayer!=null){
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
         super.onDestroy();
-
     }
 }

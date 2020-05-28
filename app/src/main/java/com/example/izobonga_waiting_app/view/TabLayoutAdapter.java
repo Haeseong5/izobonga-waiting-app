@@ -8,10 +8,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.izobonga_waiting_app.model.Customer;
 import com.example.izobonga_waiting_app.view.fragment.CustomerFragment;
+import com.example.izobonga_waiting_app.view.fragment.GraphFragment;
 
 import java.util.ArrayList;
 
 import static com.example.izobonga_waiting_app.view.fragment.CustomerFragment.CUSTOMER_FRAGMENT;
+import static com.example.izobonga_waiting_app.view.fragment.GraphFragment.GRAPH_FRAGMENT;
 
 
 public class TabLayoutAdapter extends FragmentStatePagerAdapter {
@@ -27,7 +29,6 @@ public class TabLayoutAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         // Returning the current tabs
         switch (position) {
             case 0:
@@ -37,11 +38,11 @@ public class TabLayoutAdapter extends FragmentStatePagerAdapter {
                 customerFragment.setArguments(bundle);
                 return customerFragment;
             case 1:
-                CustomerFragment customerFragment2 = new CustomerFragment();
+                GraphFragment graphFragment = new GraphFragment();
                 Bundle bundle2 = new Bundle();
-                bundle2.putParcelableArrayList(CUSTOMER_FRAGMENT, customers); // Key, Value
-                customerFragment2.setArguments(bundle2);
-                return customerFragment2;
+                bundle2.putParcelableArrayList(GRAPH_FRAGMENT, customers); // Key, Value
+                graphFragment.setArguments(bundle2);
+                return graphFragment;
             default:
                 return null;
         }

@@ -38,5 +38,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.4.0'
     implementation 'gun0912.ted:tedpermission:2.2.2'  //https://gun0912.tistory.com/61
 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'   //https://github.com/PhilJay/MPAndroidChart
 
 }

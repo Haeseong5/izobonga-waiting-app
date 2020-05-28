@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorChestnut"
+        android:background="#3F51B5"
         android:textColor="@color/colorWhite"
         android:fontFamily="@font/font_style"
         style="@style/DefaultTextViewStyle"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorFadedJade"
+        android:background="@color/colorBlue"
         style="@style/DefaultTextViewStyle"
         android:textStyle="bold"
         android:onClick="onClickListener"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorTamarind"
+        android:background="#03A9F4"
         android:onClick="onClickListener"
         android:text="고객 관리" />
 </LinearLayout>

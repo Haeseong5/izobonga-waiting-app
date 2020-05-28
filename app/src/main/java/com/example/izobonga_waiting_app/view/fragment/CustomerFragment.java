@@ -35,9 +35,6 @@ public class CustomerFragment extends Fragment implements ManageActivityView {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             customers = getArguments().getParcelableArrayList(CUSTOMER_FRAGMENT);
-            if (customers != null){
-                Toast.makeText(getActivity(),customers.size()+"",Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
@@ -66,10 +63,6 @@ public class CustomerFragment extends Fragment implements ManageActivityView {
             }
         });
 
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-//        itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-
         return rootView;
     }
 
@@ -94,6 +87,7 @@ public class CustomerFragment extends Fragment implements ManageActivityView {
 
     @Override
     public void validateFailure(String message) {
+
 
     }
 }

@@ -20,7 +20,7 @@ public class ManagerActivity extends BaseActivity implements ManageActivityView 
     public TabLayout mTabLayout;
     private TextView mTvCustomerSize;
     private ArrayList<Customer> customers;
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
 //    private ArrayList<RecordResult> mRecordList;
     private TabLayoutAdapter mTapLayoutAdapter;
 
@@ -35,13 +35,24 @@ public class ManagerActivity extends BaseActivity implements ManageActivityView 
     }
 
     private void initView() {
-        toolbar = findViewById(R.id.call_toolbar);
+        mToolbar = findViewById(R.id.call_toolbar);
+        setSupportActionBar(mToolbar);
+        // Get the ActionBar here to configure the way it behaves.
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+            actionBar.setTitle(getString(R.string.manager_title));
+        }
+
+
         mTvCustomerSize = findViewById(R.id.profile_tv_name);
         mTabLayout = findViewById(R.id.profile_tab_layout);
         mViewPager = findViewById(R.id.customer_view_pager);
 
-        mTabLayout.addTab(mTabLayout.newTab().setText("1"), 0);
-        mTabLayout.addTab(mTabLayout.newTab().setText("2"), 1);
+        mTabLayout.addTab(mTabLayout.newTab().setText("전체 고객 조회"), 0);
+        mTabLayout.addTab(mTabLayout.newTab().setText("고객 데이터 분석"), 1);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
