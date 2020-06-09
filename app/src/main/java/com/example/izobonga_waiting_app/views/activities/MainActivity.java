@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

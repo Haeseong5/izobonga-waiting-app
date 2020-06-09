@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.views.adapters;
 
 import android.os.Bundle;
 
@@ -6,14 +6,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.izobonga_waiting_app.model.Customer;
-import com.example.izobonga_waiting_app.view.fragment.CustomerFragment;
-import com.example.izobonga_waiting_app.view.fragment.GraphFragment;
+import com.example.izobonga_waiting_app.models.Customer;
+import com.example.izobonga_waiting_app.views.fragments.CustomerFragment;
+import com.example.izobonga_waiting_app.views.fragments.GraphFragment;
 
 import java.util.ArrayList;
 
-import static com.example.izobonga_waiting_app.view.fragment.CustomerFragment.CUSTOMER_FRAGMENT;
-import static com.example.izobonga_waiting_app.view.fragment.GraphFragment.GRAPH_FRAGMENT;
+import static com.example.izobonga_waiting_app.views.fragments.CustomerFragment.CUSTOMER_FRAGMENT;
+import static com.example.izobonga_waiting_app.views.fragments.GraphFragment.GRAPH_FRAGMENT;
 
 
 public class TabLayoutAdapter extends FragmentStatePagerAdapter {

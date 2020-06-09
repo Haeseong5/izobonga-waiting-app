@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.service;
+package com.example.izobonga_waiting_app.services;
 
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.interfaces.CallActivityView;
-import com.example.izobonga_waiting_app.model.Customer;
+import com.example.izobonga_waiting_app.models.Customer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -1,7 +1,6 @@
 package com.example.izobonga_waiting_app.interfaces;
 
-import com.example.izobonga_waiting_app.model.Customer;
-import com.example.izobonga_waiting_app.model.Ticket;
+import com.example.izobonga_waiting_app.models.Customer;
 
 import java.util.ArrayList;
 

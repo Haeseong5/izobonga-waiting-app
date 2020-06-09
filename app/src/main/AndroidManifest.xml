@@ -16,14 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.ManagerActivity"/>
-        <activity android:name=".view.CallActivity" />
+        <activity android:name=".views.activities.GifActivity"
+            android:screenOrientation="landscape"
+            >
+        </activity>
+        <activity android:name=".views.activities.ManagerActivity" />
+        <activity android:name=".views.activities.CallActivity" />
         <activity
-            android:name=".view.WaitingActivity"
+            android:name=".views.activities.WaitingActivity"
             android:screenOrientation="landscape"
             android:theme="@style/NoStatusBar" />
-
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".views.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

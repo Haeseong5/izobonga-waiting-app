@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.views.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.izobonga_waiting_app.R;
-import com.example.izobonga_waiting_app.model.Customer;
+import com.example.izobonga_waiting_app.models.Customer;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,6 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.MyViewHolder> 
     public interface OnItemClickListener {
         void onItemClickCall(View v, int position);
         void onItemClickDelete(View v, int position);
-
     }
 
     // OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드

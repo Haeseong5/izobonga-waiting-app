@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.model;
+package com.example.izobonga_waiting_app.models;
 
 import java.util.ArrayList;
 

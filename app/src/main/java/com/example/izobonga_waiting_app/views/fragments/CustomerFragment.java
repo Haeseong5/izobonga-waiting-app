@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view.fragment;
+package com.example.izobonga_waiting_app.views.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,15 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.izobonga_waiting_app.BaseActivity;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.interfaces.ManageActivityView;
-import com.example.izobonga_waiting_app.model.Customer;
-import com.example.izobonga_waiting_app.service.ManageService;
-import com.example.izobonga_waiting_app.view.CallActivity;
-import com.example.izobonga_waiting_app.view.CallAdapter;
-import com.example.izobonga_waiting_app.view.CustomerAdapter;
-import com.example.izobonga_waiting_app.view.ManagerActivity;
+import com.example.izobonga_waiting_app.models.Customer;
+import com.example.izobonga_waiting_app.services.ManageService;
+import com.example.izobonga_waiting_app.views.adapters.CustomerAdapter;
+import com.example.izobonga_waiting_app.views.activities.ManagerActivity;
 
 import java.util.ArrayList;
 import java.util.Objects;

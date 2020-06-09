@@ -1,28 +1,24 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.views.activities;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.izobonga_waiting_app.BaseActivity;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.interfaces.CallActivityView;
-import com.example.izobonga_waiting_app.model.Customer;
-import com.example.izobonga_waiting_app.service.CallService;
+import com.example.izobonga_waiting_app.models.Customer;
+import com.example.izobonga_waiting_app.services.CallService;
+import com.example.izobonga_waiting_app.views.adapters.CallAdapter;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.util.ArrayList;

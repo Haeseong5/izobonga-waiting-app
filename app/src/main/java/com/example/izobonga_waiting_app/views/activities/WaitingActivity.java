@@ -1,9 +1,10 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.views.activities;
 
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -15,23 +16,22 @@ import com.example.izobonga_waiting_app.FireBaseApi;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.databinding.ActivityWaitingBinding;
 import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
-import com.example.izobonga_waiting_app.service.TTSService;
-import com.example.izobonga_waiting_app.service.WaitingService;
-import com.example.izobonga_waiting_app.view.dialog.PersonnelDialog;
-import com.example.izobonga_waiting_app.view.dialog.TicketDialog;
+import com.example.izobonga_waiting_app.services.WaitingService;
+import com.example.izobonga_waiting_app.views.dialogs.PersonnelDialog;
+import com.example.izobonga_waiting_app.views.dialogs.TicketDialog;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class WaitingActivity extends BaseActivity implements WaitingActivityView {
     private final String TAG = WaitingActivity.class.getName();
     FireBaseApi firebaseApi;
-    TTSService mTTsService;
     ActivityWaitingBinding binding;
     ArrayList<String> numbers;
     TicketDialog mTicketDialog;
     PersonnelDialog mTotalDialog, mChildDialog;
-//    ChildDialog mChildDialog;
+    public TextToSpeech tts;
 
     int mChild;
     int mTotal;
@@ -39,6 +39,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideStatusBar();
+        hideSoftKey();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_waiting);
         binding.setActivity(this);
         firebaseApi = new FireBaseApi();
@@ -49,7 +50,16 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         numbers = new ArrayList<>();
 
         binding.setClickCallback(clickListener);
-        mTTsService = new TTSService(this);
+
+        if (tts == null){
+            tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int i) {
+                    tts.setLanguage(Locale.KOREA);
+                }
+            });
+        }
+
     }
 
     private void tryWaiting(int personnelNumber, int childNumber){
@@ -140,6 +150,8 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         WaitingService waitingService = new WaitingService(this);
         waitingService.setWaitingEventListener();
     }
+
+
 
     //NumberKeyPad ClickListener
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -240,17 +252,25 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
 
     @Override
     public void speak(String ticket) {
-        mTTsService.speak(ticket);
+        if (tts != null){
+            String message = String.format(getString(R.string.tts_message),ticket);
+            Log.d(TAG, message);
+
+            tts.setSpeechRate(1.0f); //읽는 속도 설정 : 기본
+            tts.setPitch((float) 1);      // 음량
+//        tts.setSpeechRate(""); //톤 조절
+            tts.speak(message , TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 //        mTTsService.removeTTS();
-        if(mTTsService.tts != null){
-            mTTsService.tts.stop();
-            mTTsService.tts.shutdown();
-            mTTsService.tts = null;
+        if(tts != null){
+            tts.stop();
+            tts.shutdown();
+            tts = null;
         }
     }
 }

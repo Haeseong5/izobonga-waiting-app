@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.views.activities;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -9,8 +9,9 @@ import android.widget.TextView;
 import com.example.izobonga_waiting_app.BaseActivity;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.interfaces.ManageActivityView;
-import com.example.izobonga_waiting_app.model.Customer;
-import com.example.izobonga_waiting_app.service.ManageService;
+import com.example.izobonga_waiting_app.models.Customer;
+import com.example.izobonga_waiting_app.services.ManageService;
+import com.example.izobonga_waiting_app.views.adapters.TabLayoutAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;

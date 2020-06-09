@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view;
+package com.example.izobonga_waiting_app.views.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.izobonga_waiting_app.R;
-import com.example.izobonga_waiting_app.model.Customer;
+import com.example.izobonga_waiting_app.models.Customer;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import static com.example.izobonga_waiting_app.FireBaseApi.DATE_FORMAT;

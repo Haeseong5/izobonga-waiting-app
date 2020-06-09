@@ -1,4 +1,4 @@
-package com.example.izobonga_waiting_app.view.dialog;
+package com.example.izobonga_waiting_app.views.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;

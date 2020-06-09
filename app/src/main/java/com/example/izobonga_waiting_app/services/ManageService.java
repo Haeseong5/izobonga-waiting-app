@@ -1,13 +1,12 @@
-package com.example.izobonga_waiting_app.service;
+package com.example.izobonga_waiting_app.services;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.izobonga_waiting_app.FireBaseApi;
-import com.example.izobonga_waiting_app.interfaces.CallActivityView;
 import com.example.izobonga_waiting_app.interfaces.ManageActivityView;
-import com.example.izobonga_waiting_app.model.Customer;
+import com.example.izobonga_waiting_app.models.Customer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,7 +17,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CUSTOMER;
 import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_MANAGER;
 
 public class ManageService {
