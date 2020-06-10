@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.izobonga_waiting_app.FireBaseApi;
+import com.example.izobonga_waiting_app.FireBaseHelper;
 import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
 import com.example.izobonga_waiting_app.models.Customer;
 import com.example.izobonga_waiting_app.models.Ticket;
@@ -25,9 +25,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CUSTOMER;
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CALL;
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_MANAGER;
+import static com.example.izobonga_waiting_app.FireBaseHelper.COLLECTION_CUSTOMER;
+import static com.example.izobonga_waiting_app.FireBaseHelper.COLLECTION_CALL;
+import static com.example.izobonga_waiting_app.FireBaseHelper.COLLECTION_MANAGER;
 
 public class WaitingService {
     private final String TAG = "WaitingService";
@@ -40,7 +40,7 @@ public class WaitingService {
 
 
     public void increaseWaitingCount(final Timestamp time, final String phone, final int personnel, final int child) {
-        FirebaseFirestore db = FireBaseApi.getInstance();
+        FirebaseFirestore db = FireBaseHelper.getInstance();
         DocumentReference customerRef = db.collection(COLLECTION_CALL).document("waiting");
         customerRef
                 .update("ticket", FieldValue.increment(1))
@@ -62,7 +62,7 @@ public class WaitingService {
     }
 
     public void getTicket(final Timestamp time, final String phone, final int personnel, final int child) {
-        FirebaseFirestore db = FireBaseApi.getInstance();
+        FirebaseFirestore db = FireBaseHelper.getInstance();
         DocumentReference docRef = db.collection(COLLECTION_CALL).document("waiting");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -94,7 +94,7 @@ public class WaitingService {
         customer.setChild(child);
         customer.setPersonnel(personnel);
         customer.setTicket(ticket);
-        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).add(customer)
+        FireBaseHelper.getInstance().collection(COLLECTION_CUSTOMER).add(customer)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -115,7 +115,7 @@ public class WaitingService {
 
     //document 삭제를 용이하게 하기 위해 document 의 필드에 docID 등록
     public void setDocID(String collection, final String docID) {
-        DocumentReference customerRef = FireBaseApi.getInstance().collection(collection).document(docID);
+        DocumentReference customerRef = FireBaseHelper.getInstance().collection(collection).document(docID);
         customerRef
                 .update("docID", docID)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -139,7 +139,7 @@ public class WaitingService {
         customer.setPhone(phone);
         customer.setChild(child);
         customer.setPersonnel(personnel);
-        FireBaseApi.getInstance().collection(COLLECTION_MANAGER).add(customer)
+        FireBaseHelper.getInstance().collection(COLLECTION_MANAGER).add(customer)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -158,7 +158,7 @@ public class WaitingService {
 
     public void setWaitingEventListener() {
         final String TAG = "setWaitingEventListener";
-        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER)
+        FireBaseHelper.getInstance().collection(COLLECTION_CUSTOMER)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshots,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="360dp"
+    android:layout_width="400dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center_horizontal">
@@ -55,19 +55,20 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/colorBlue"
-        android:paddingHorizontal="17dp"
         android:gravity="center_vertical">
         <Button
-            android:id="@+id/child_previous"
+            android:id="@+id/personnel_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
+            android:layout_marginHorizontal="20dp"
             android:text="이전"/>
         <Button
-            android:id="@+id/child_next"
+            android:id="@+id/personnel_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
+            android:layout_marginHorizontal="20dp"
             android:layout_alignParentEnd="true"
             android:text="다음" />
 

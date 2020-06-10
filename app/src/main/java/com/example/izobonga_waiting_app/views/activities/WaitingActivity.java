@@ -12,7 +12,7 @@ import android.view.WindowManager;
 
 
 import com.example.izobonga_waiting_app.BaseActivity;
-import com.example.izobonga_waiting_app.FireBaseApi;
+import com.example.izobonga_waiting_app.FireBaseHelper;
 import com.example.izobonga_waiting_app.R;
 import com.example.izobonga_waiting_app.databinding.ActivityWaitingBinding;
 import com.example.izobonga_waiting_app.interfaces.WaitingActivityView;
@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public class WaitingActivity extends BaseActivity implements WaitingActivityView {
     private final String TAG = WaitingActivity.class.getName();
-    FireBaseApi firebaseApi;
+    FireBaseHelper firebaseHelper;
     ActivityWaitingBinding binding;
     ArrayList<String> numbers;
     TicketDialog mTicketDialog;
@@ -42,7 +42,7 @@ public class WaitingActivity extends BaseActivity implements WaitingActivityView
         hideSoftKey();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_waiting);
         binding.setActivity(this);
-        firebaseApi = new FireBaseApi();
+        firebaseHelper = new FireBaseHelper();
         setWaitingListener();
         binding.waitingPhoneText.addTextChangedListener(new PhoneNumberFormattingTextWatcher()); //입력하면 phone number form 으로 만들기
         binding.waitingPhoneText.setEnabled(false); //editText 사용 불가능하게 만들기

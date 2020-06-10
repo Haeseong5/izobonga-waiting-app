@@ -4,6 +4,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.izobonga_waiting_app.BaseActivity;
@@ -36,7 +37,7 @@ public class ManagerActivity extends BaseActivity implements ManageActivityView 
     }
 
     private void initView() {
-        mToolbar = findViewById(R.id.call_toolbar);
+        mToolbar = findViewById(R.id.base_toolbar);
         setSupportActionBar(mToolbar);
         // Get the ActionBar here to configure the way it behaves.
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
@@ -101,5 +102,20 @@ public class ManagerActivity extends BaseActivity implements ManageActivityView 
     @Override
     public void validateFailure(String message) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case android.R.id.home: //toolbar의 back버튼 눌렀을 때 동작
+                finish();
+                break;
+            default:
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

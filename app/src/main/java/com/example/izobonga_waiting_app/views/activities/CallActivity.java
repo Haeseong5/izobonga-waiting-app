@@ -49,7 +49,7 @@ public class CallActivity extends BaseActivity implements CallActivityView{
 
     private void initView(){
         tvNoCustomerText = findViewById(R.id.call_tv_message);
-        mToolbar = findViewById(R.id.call_toolbar);
+        mToolbar = findViewById(R.id.base_toolbar);
         setSupportActionBar(mToolbar);
 
         // Get the ActionBar here to configure the way it behaves.

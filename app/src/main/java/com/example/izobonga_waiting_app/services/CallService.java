@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-import com.example.izobonga_waiting_app.FireBaseApi;
+import com.example.izobonga_waiting_app.FireBaseHelper;
 import com.example.izobonga_waiting_app.interfaces.CallActivityView;
 import com.example.izobonga_waiting_app.models.Customer;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CUSTOMER;
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_CALL;
+import static com.example.izobonga_waiting_app.FireBaseHelper.COLLECTION_CUSTOMER;
+import static com.example.izobonga_waiting_app.FireBaseHelper.COLLECTION_CALL;
 
 public class CallService {
     private final String TAG = "CallService";
@@ -40,7 +40,7 @@ public class CallService {
     //웨이팅 고객 초기화. onCreate()에서 호출됨.
     public void initWaitingCustomer() {
         final ArrayList <Customer> customers = new ArrayList<>();
-        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).orderBy("ticket", Query.Direction.ASCENDING)
+        FireBaseHelper.getInstance().collection(COLLECTION_CUSTOMER).orderBy("ticket", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -64,7 +64,7 @@ public class CallService {
     //대기 고객 호출 버튼 클릭시 호출
     public void callWaitingCustomer(final String docID, final int position) {
 //        showProgressDialog();
-        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).document(docID)
+        FireBaseHelper.getInstance().collection(COLLECTION_CUSTOMER).document(docID)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -84,7 +84,7 @@ public class CallService {
     //대기 고객 호출 버튼 클릭시 호출
     public void deleteCustomer(final String docID, final int position) {
 //        showProgressDialog();
-        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER).document(docID)
+        FireBaseHelper.getInstance().collection(COLLECTION_CUSTOMER).document(docID)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -104,7 +104,7 @@ public class CallService {
 
     public void setWaitingEventListener(){
         final String TAG = "setWaitingEventListener";
-        FireBaseApi.getInstance().collection(COLLECTION_CUSTOMER)
+        FireBaseHelper.getInstance().collection(COLLECTION_CUSTOMER)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshots,
@@ -135,7 +135,7 @@ public class CallService {
     }
 
     public void resetTicket(){
-        DocumentReference docRef = FireBaseApi.getInstance().collection(COLLECTION_CALL).document("waiting");
+        DocumentReference docRef = FireBaseHelper.getInstance().collection(COLLECTION_CALL).document("waiting");
 
         Map<String,Object> updates = new HashMap<>();
         updates.put("ticket", 0);

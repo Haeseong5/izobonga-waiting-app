@@ -14,7 +14,7 @@ import com.example.izobonga_waiting_app.models.Customer;
 
 import java.util.ArrayList;
 
-import static com.example.izobonga_waiting_app.FireBaseApi.DATE_FORMAT;
+import static com.example.izobonga_waiting_app.FireBaseHelper.DATE_FORMAT;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyViewHolder> {
     private ArrayList<Customer> customers;

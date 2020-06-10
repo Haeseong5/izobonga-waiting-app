@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.izobonga_waiting_app.FireBaseApi;
+import com.example.izobonga_waiting_app.FireBaseHelper;
 import com.example.izobonga_waiting_app.interfaces.ManageActivityView;
 import com.example.izobonga_waiting_app.models.Customer;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,7 +17,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import static com.example.izobonga_waiting_app.FireBaseApi.COLLECTION_MANAGER;
+import static com.example.izobonga_waiting_app.FireBaseHelper.COLLECTION_MANAGER;
 
 public class ManageService {
     private final String TAG = "ManageService";
@@ -29,7 +29,7 @@ public class ManageService {
 
     public void setData() {
         final ArrayList<Customer> customers = new ArrayList<>();
-        FireBaseApi.getInstance().collection(COLLECTION_MANAGER).orderBy("timestamp", Query.Direction.ASCENDING)
+        FireBaseHelper.getInstance().collection(COLLECTION_MANAGER).orderBy("timestamp", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -49,7 +49,7 @@ public class ManageService {
     }
 
     public void deleteData(String docID, final int position){
-        FireBaseApi.getInstance().collection(COLLECTION_MANAGER).document(docID)
+        FireBaseHelper.getInstance().collection(COLLECTION_MANAGER).document(docID)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

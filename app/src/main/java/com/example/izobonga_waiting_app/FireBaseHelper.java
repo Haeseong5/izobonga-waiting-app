@@ -1,15 +1,12 @@
 package com.example.izobonga_waiting_app;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
-public class FireBaseApi {
-    private String TAG = FireBaseApi.class.getName();
+public class FireBaseHelper {
+    private String TAG = FireBaseHelper.class.getName();
     public static FirebaseFirestore db;
     public final static String COLLECTION_CUSTOMER = "customer";
     public final static String COLLECTION_MANAGER = "manager";

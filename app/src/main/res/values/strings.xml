@@ -11,5 +11,8 @@
     <string name="dialog_sub_title">총 인원을 입력해주세요.</string>
     <string name="child_dialog_title">유아 (7세 이하)</string>
     <string name="child_dialog_sub_title">유아 인원수를 입력해주세요.</string>
+    <string name="check_call_subtitle">확인을 누르면 고객님께 문자가 발송됩니다.</string>
+    <string name="check_call_title">대기고객 호출</string>
+    <string name="waiting_message">휴대폰 번호를 입력하시면 \n문자로 알려드립니다.</string>
 
 </resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/check_dialog_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:fontFamily="@font/font_style"
+            android:text="@string/check_call_title"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:layout_marginVertical="20dp"/>
+        <TextView
+            android:id="@+id/check_dialog_tv_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:text="@string/check_call_subtitle"
+            android:textColor="@color/colorBlue"
+            android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/colorBlue"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/check_bt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:layout_marginHorizontal="20dp"
+            android:text="취소"/>
+        <Button
+            android:id="@+id/check_bt_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:layout_marginHorizontal="20dp"
+            android:layout_alignParentEnd="true"
+            android:text="확인" />
+
+    </RelativeLayout>
+</LinearLayout>

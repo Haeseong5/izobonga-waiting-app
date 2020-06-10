@@ -56,8 +56,8 @@ public class PersonnelDialog extends Dialog {
         mIvPlus = findViewById(R.id.personnel_minus);
         mIvMinus = findViewById(R.id.child_plus);
         mTvNumber = findViewById(R.id.child_number);
-        mBtnPrevious = findViewById(R.id.child_previous);
-        mBtnNext = findViewById(R.id.child_next);
+        mBtnPrevious = findViewById(R.id.personnel_previous);
+        mBtnNext = findViewById(R.id.personnel_next);
         mTvTitle = findViewById(R.id.personnel_dialog_tv_title);
         mTvSubTitle = findViewById(R.id.personnel_dialog_tv_sub_title);
 

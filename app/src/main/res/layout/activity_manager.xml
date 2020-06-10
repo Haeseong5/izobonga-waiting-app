@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:mContext=".src.profile.ProfileActivity">
 
-    <include layout="@layout/toolbar_m" />
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
