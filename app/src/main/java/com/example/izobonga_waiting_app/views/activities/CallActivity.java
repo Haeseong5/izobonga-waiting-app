@@ -126,9 +126,9 @@ public class CallActivity extends BaseActivity implements CallActivityView{
         callService.resetTicket();
     }
 
-    private void tryCallSMS(String phoneNumber, String message, int ticket){
+    private void tryCallSMS(String phoneNumber, String message, int ticket, int position){
         CallService callService = new CallService(this);
-        callService.sendSMS(phoneNumber, message, ticket);
+        callService.sendSMS(phoneNumber, message, ticket, position);
     }
 
     private void tryAlarm(){
@@ -169,7 +169,7 @@ public class CallActivity extends BaseActivity implements CallActivityView{
     //고객이 삭제되었을 때 호출됨.
     @Override
     public void called(int position) {
-        tryCallSMS(customers.get(position).getPhone(), getString(R.string.sms_message),customers.get(position).getTicket()); //문자메세지 전송
+        tryCallSMS(customers.get(position).getPhone(), getString(R.string.sms_message), customers.get(position).getTicket(), position); //문자메세지 전송
         adapter.removeItem(position);
         setZeroDataMessage();
         adapter.notifyDataSetChanged();

@@ -155,11 +155,11 @@ public class CallService {
     //destroy 될 때 리스너 해제.
 
 
-    public void sendSMS(String phoneNumber, String message, int ticket){
+    public void sendSMS(String phoneNumber, String message, int ticket, int position){
         try {
 //            String pn = phoneNumber.replace("-","");
 //            Log.d("pn",pn);
-            String msg = String.format(message, ticket);
+            String msg = String.format(message, ticket, position);
             //전송
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, msg, null, null);
