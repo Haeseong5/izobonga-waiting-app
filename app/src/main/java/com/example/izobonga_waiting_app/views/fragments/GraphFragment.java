@@ -29,6 +29,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 
 /**
@@ -37,20 +39,25 @@ import java.util.Locale;
  */
 public class GraphFragment extends Fragment {
     public static final String GRAPH_FRAGMENT = "GraphFragment";
-    private ArrayList<Customer> mCustomers;
+    private final String GRAPH_NAME_FIRST = "요일 별 고객 추이";
+    private final String GRAPH_NAME_SECCOND = "시간대 별 고객 추이";
+    private int mGraphIdx = 0;
+
     private TextView tvTitle;
     private CombinedChart mChart;
 
-    private final int mCount = 12;
-    private String[] mMonths = new String[] {
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-    };
+    private ArrayList<Customer> mCustomers;
+
     private String[] mDays = new String[] {
             "월", "화", "수", "목", "금", "토", "일"
     };
-    float[] mTotals = new float[7];
-    float[] mChildren = new float[7];
+
+    private HashMap<String, Integer> mTimeMap;
+    private float[] mTotals = new float[7];
+    private float[] mChildren = new float[7];
+
     private final SimpleDateFormat WEEKDAY_FORMAT = new SimpleDateFormat("EE", Locale.KOREA);
+    private final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH", Locale.KOREA);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +67,6 @@ public class GraphFragment extends Fragment {
             if (mCustomers != null) {
                 Log.d(GRAPH_FRAGMENT, String.valueOf(mCustomers.size()));
             }
-
         }
     }
 
@@ -69,9 +75,132 @@ public class GraphFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_graph, container, false);
         tvTitle = rootView.findViewById(R.id.graph_tv_title);
+        tvTitle.setText(GRAPH_NAME_FIRST);
         mChart = rootView.findViewById(R.id.graph_combined_chart);
-        initDataSet();
+        mTimeMap = new HashMap<>();
+        preProcessingWeekData();
+        preProcessingTimeData();
+        setWeekGraph();
+//        switch (mGraphIdx){
+//            case 0: //요일별
+//                setWeekGraph();
+//                break;
+//            case 1: //시간대 별
+//                setWeekGraph();
+//                break;
+//            default: //요일별
+//                setWeekGraph();
+//                break;
+//        }
+        return rootView;
+    }
 
+
+    private void preProcessingTimeData(){
+        for (int i=0; i<mCustomers.size(); i++){
+            String time = WEEKDAY_FORMAT.format(mCustomers.get(i).getTimestamp().toDate());
+            Integer count = mTimeMap.get(time);
+            if (count == null) {
+                mTimeMap.put(time, 1);
+            }
+            else {
+                mTimeMap.put(time, count + 1);
+            }
+            Iterator<String> iter = mTimeMap.keySet().iterator();
+            while(iter.hasNext()) {
+                String key = iter.next();
+                if (key != null){
+                    int value = mTimeMap.get(key);
+                    Log.d("fureun", "key : " + key + ", value : " + value);
+                }
+            }
+        }
+    }
+
+    private void preProcessingWeekData(){
+        //요일 데이터 전처리
+        for (int i=0; i<mCustomers.size(); i++){
+            switch (WEEKDAY_FORMAT.format(mCustomers.get(i).getTimestamp().toDate())){
+                case  "월":
+                    mTotals[0] += mCustomers.get(i).getPersonnel();
+                    mChildren[0] += mCustomers.get(i).getChild();
+                    break;
+                case  "화":
+                    mTotals[1] += mCustomers.get(i).getPersonnel();
+                    mChildren[1] += mCustomers.get(i).getChild();
+                    break;
+                case  "수":
+                    mTotals[2] += mCustomers.get(i).getPersonnel();
+                    mChildren[2] += mCustomers.get(i).getChild();
+                    break;
+                case  "목":
+                    mTotals[3] += mCustomers.get(i).getPersonnel();
+                    mChildren[3] += mCustomers.get(i).getChild();
+                    break;
+                case  "금":
+                    mTotals[4] += mCustomers.get(i).getPersonnel();
+                    mChildren[4] += mCustomers.get(i).getChild();
+                    break;
+                case  "토":
+                    mTotals[5] += mCustomers.get(i).getPersonnel();
+                    mChildren[5] += mCustomers.get(i).getChild();
+                    break;
+                case  "일":
+                    mTotals[6] += mCustomers.get(i).getPersonnel();
+                    mChildren[6] += mCustomers.get(i).getChild();
+                    break;
+            }
+        }
+
+
+    }
+
+    //요일별 총 인원 수 - 몇월 며칠날 몇명왔는지 보단 무슨요일에 대기손님이 몰리는지 아는 게 나을듯.
+    private BarData generateBarData() {
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        for (int index = 0; index < mTotals.length; index++) {
+            entries.add(new BarEntry(index, mTotals[index]));
+        }
+
+        BarDataSet set1 = new BarDataSet(entries, "총 인원 수");
+        set1.setColor(Color.rgb(60, 220, 78));
+        set1.setValueTextColor(Color.rgb(60, 220, 78));
+        set1.setValueTextSize(10f);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        float groupSpace = 0.06f;
+        float barSpace = 0.02f; // x2 dataset
+        float barWidth = 0.45f; // x2 dataset
+        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
+
+        BarData d = new BarData(set1);
+        return d;
+    }
+
+    private LineData generateLineData() {
+        LineData d = new LineData();
+        ArrayList<Entry> entries = new ArrayList<>();
+        for (int index = 0; index < mChildren.length; index++){
+            entries.add(new Entry(index, mChildren[index]));
+        }
+
+        LineDataSet set = new LineDataSet(entries, "아동 인원 수");
+        set.setColor(Color.rgb(240, 238, 70));
+        set.setLineWidth(2.5f);
+        set.setCircleColor(Color.rgb(240, 238, 70));
+        set.setCircleRadius(5f);
+        set.setFillColor(Color.rgb(240, 238, 70));
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set.setDrawValues(true);
+        set.setValueTextSize(10f);
+        set.setValueTextColor(Color.rgb(240, 238, 70));
+
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        d.addDataSet(set);
+
+        return d;
+    }
+    private void setWeekGraph(){
         mChart.getDescription().setEnabled(false);
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
@@ -120,106 +249,7 @@ public class GraphFragment extends Fragment {
 
         mChart.setData(data);
         mChart.invalidate();
-        return rootView;
-    }
 
-//데이터 전처리
-    private void initDataSet(){
-        for (int i=0; i<mCustomers.size(); i++){
-            switch (WEEKDAY_FORMAT.format(mCustomers.get(i).getTimestamp().toDate())){
-                case  "월":
-                    mTotals[0] += mCustomers.get(i).getPersonnel();
-                    mChildren[0] += mCustomers.get(i).getChild();
-                    break;
-                case  "화":
-                    mTotals[1] += mCustomers.get(i).getPersonnel();
-                    mChildren[1] += mCustomers.get(i).getChild();
-                    break;
-                case  "수":
-                    mTotals[2] += mCustomers.get(i).getPersonnel();
-                    mChildren[2] += mCustomers.get(i).getChild();
-                    break;
-                case  "목":
-                    mTotals[3] += mCustomers.get(i).getPersonnel();
-                    mChildren[3] += mCustomers.get(i).getChild();
-                    break;
-                case  "금":
-                    mTotals[4] += mCustomers.get(i).getPersonnel();
-                    mChildren[4] += mCustomers.get(i).getChild();
-                    break;
-                case  "토":
-                    mTotals[5] += mCustomers.get(i).getPersonnel();
-                    mChildren[5] += mCustomers.get(i).getChild();
-                    break;
-                case  "일":
-                    mTotals[6] += mCustomers.get(i).getPersonnel();
-                    mChildren[6] += mCustomers.get(i).getChild();
-                    break;
-            }
-        }
-    }
-
-    //요일별 총 인원 수 - 몇월 며칠날 몇명왔는지 보단 무슨요일에 대기손님이 몰리는지 아는 게 나을듯.
-    private BarData generateBarData() {
-        ArrayList<BarEntry> entries1 = new ArrayList<>();
-//        ArrayList<BarEntry> entries2 = new ArrayList<>();
-
-        for (int index = 0; index < mTotals.length; index++) {
-            entries1.add(new BarEntry(index, mTotals[index]));
-        }
-
-        BarDataSet set1 = new BarDataSet(entries1, "총 인원 수");
-        set1.setColor(Color.rgb(60, 220, 78));
-        set1.setValueTextColor(Color.rgb(60, 220, 78));
-        set1.setValueTextSize(10f);
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-
-//        BarDataSet set2 = new BarDataSet(entries2, "");
-//        set2.setStackLabels(new String[]{"Stack 1", "Stack 2"});
-//        set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255));
-//        set2.setValueTextColor(Color.rgb(61, 165, 255));
-//        set2.setValueTextSize(10f);
-//        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
-
-        float groupSpace = 0.06f;
-        float barSpace = 0.02f; // x2 dataset
-        float barWidth = 0.45f; // x2 dataset
-        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
-
-        BarData d = new BarData(set1);
-//        d.setBarWidth(barWidth);
-
-        // make this BarData object grouped
-//        d.groupBars(0, groupSpace, barSpace); // start at x = 0
-
-        return d;
-
-    }
-
-    private LineData generateLineData() {
-
-        LineData d = new LineData();
-
-        ArrayList<Entry> entries = new ArrayList<>();
-        for (int index = 0; index < mChildren.length; index++){
-            entries.add(new Entry(index, mChildren[index]));
-        }
-
-        LineDataSet set = new LineDataSet(entries, "아동 인원 수");
-        set.setColor(Color.rgb(240, 238, 70));
-        set.setLineWidth(2.5f);
-        set.setCircleColor(Color.rgb(240, 238, 70));
-        set.setCircleRadius(5f);
-        set.setFillColor(Color.rgb(240, 238, 70));
-        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        set.setDrawValues(true);
-        set.setValueTextSize(10f);
-        set.setValueTextColor(Color.rgb(240, 238, 70));
-
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        d.addDataSet(set);
-
-        return d;
     }
 
     private float getRandom(float range, float startsfrom) {
