@@ -9,7 +9,7 @@ Customer Input: 휴대폰 번호, 총 인원, 아동 인원  관리자는 현재
 웨이팅리스트의 아이템에는 호출 버튼이 있어서, 관리자가 호출을 누르면 사용자에게 호출 메세지가 전송됩니다.
 그리고 웨이팅리스트에서 호출된 고객은 삭제됩니다. 또한 추가로 웨이팅을 접수한 고객이 있으면 리스트는 실시간으로 반영되어 즉시 확인할 수 있습니다.  
 
-BackEnd: Firebase
-FrontEnd: Android 
-Language: Java  
+- BackEnd: Firebase
+- FrontEnd: Android 
+- Language: Java  
 
